@@ -1,6 +1,5 @@
 package cn.tabll.sskj
 
-import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -8,8 +7,10 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import cn.tabll.sskj.tools.BottomNavigationViewHelper
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.content_main.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
 
@@ -38,9 +39,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         nav_view.setNavigationItemSelectedListener(this)
 
+        init()
         log.info("主页面已启动")
+    }
 
-
+    private fun init(){
+        val bottomNavigationViewHelper = BottomNavigationViewHelper()
+        bottomNavigationViewHelper.disableShiftMode(bottom_navigation_view) //解决底部导航栏问题
     }
 
     override fun onBackPressed() {
