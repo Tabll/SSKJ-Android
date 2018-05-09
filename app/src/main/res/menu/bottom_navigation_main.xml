@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_main_page"
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:title="@string/main_page"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_water_quality"
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:title="@string/water_quality"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_shop"
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:title="@string/shop"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_mine"
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:title="@string/mine"
+        app:showAsAction="ifRoom" />
+
+</menu>
