@@ -6,6 +6,11 @@ import android.view.animation.AccelerateInterpolator
 import android.view.animation.AlphaAnimation
 import kotlinx.android.synthetic.main.activity_start.*
 import org.jetbrains.anko.*
+import android.view.View.SYSTEM_UI_FLAG_FULLSCREEN
+import android.view.View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+import android.view.View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+
+
 
 class StartActivity : AppCompatActivity() {
 
@@ -15,6 +20,10 @@ class StartActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
         log.info("启动")
+
+        val decorView = window.decorView
+        val uiOptions = (SYSTEM_UI_FLAG_HIDE_NAVIGATION or SYSTEM_UI_FLAG_IMMERSIVE_STICKY or SYSTEM_UI_FLAG_FULLSCREEN)
+        decorView.systemUiVisibility = uiOptions
 
         showAlphaAnimation()
         launchMainActivity()
