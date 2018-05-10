@@ -10,8 +10,6 @@ import android.view.View.SYSTEM_UI_FLAG_FULLSCREEN
 import android.view.View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
 import android.view.View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 
-
-
 class StartActivity : AppCompatActivity() {
 
     private var log = AnkoLogger<String>()
@@ -27,6 +25,11 @@ class StartActivity : AppCompatActivity() {
 
         showAlphaAnimation()
         launchMainActivity()
+    }
+
+    override fun onPause() {
+        finish() //结束此Activity
+        super.onPause()
     }
 
     override fun onRestart() {

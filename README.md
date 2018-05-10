@@ -11,9 +11,12 @@
 
 ## 现状
 - v0.0.1 - 项目初始化
+- v0.0.2 - 基本功能构建
 
 ## 运行环境
 ### Android 5.1 - Android 8.1
+> TargetSDK: 27 <br>
+> MinSDK: 22
 
 ## Licence
 在 [Licence](https://github.com/Tabll/SSKJ-Android/blob/master/LICENSE) 页面查看开源协议
