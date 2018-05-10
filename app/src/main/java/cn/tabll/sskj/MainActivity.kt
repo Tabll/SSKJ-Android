@@ -56,29 +56,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.action_main_page -> {
-                    //view_pager.currentItem= 0
-                    //toast("1")
+                    view_pager.currentItem = 0
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.action_water_quality -> {
-                    //view_pager.currentItem = 1
-                    //toast("2")
+                    view_pager.currentItem = 1
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.action_shop -> {
-                    //view_pager.currentItem= 2
-                    //toast("3")
+                    view_pager.currentItem = 2
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.action_mine -> {
-                    //view_pager.currentItem = 3
-                    //toast("4")
+                    view_pager.currentItem = 3
                     return@OnNavigationItemSelectedListener true
                 }
             }
             false
         }
-        bottom_navigation_view.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        bottom_navigation_view.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener) //底部导航栏点击监听
 
         val mOnPageChangeListener = object : ViewPager.OnPageChangeListener{
             override fun onPageScrollStateChanged(state: Int) {
@@ -90,7 +86,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
 
             override fun onPageSelected(position: Int) {
-
                 bottom_navigation_view.selectedItemId = position
                 when (position){
                     0 -> bottom_navigation_view.selectedItemId = R.id.action_main_page
@@ -99,48 +94,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     3 -> bottom_navigation_view.selectedItemId = R.id.action_mine
                     else -> log.error("ViewPage超出底部导航栏个数")
                 }
-//
-//
-                //findViewById<BottomNavigationItemView>(bottom_navigation_view.selectedItemId)
-//
-                //bottom_navigation_view.selectedItemId
-//
-
-                //if (bottom_navigation_view.selectedItemId != null) {
-                //    menuItem!!.*isChecked* = false
-                //} else {
-                //    bottom_navigation_view.*menu*.getItem(0).*isChecked* = false
-                //}
-                //menuItem = bottom_navigation_view.*menu*.getItem(position)
-                //menuItem!!.*isChecked* = true
             }
         }
-
-        view_pager.addOnPageChangeListener(mOnPageChangeListener)
-        view_pager.adapter = ViewPagerAdapter(supportFragmentManager)
-
-
-
+        view_pager.addOnPageChangeListener(mOnPageChangeListener) //ViewPager事件监听
+        view_pager.adapter = ViewPagerAdapter(supportFragmentManager) //ViewPager适配器
     }
 
     override fun onBackPressed() {
-        //if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-        //    drawer_layout.closeDrawer(GravityCompat.START)
-        //} else {
-        //    super.onBackPressed()
-        //}
-
-        finish()
-        //dialogOk("确定要退出么", object : DialogLinstener() {
-        //    fun confirm(dialog: Dialog) {
-        //        dialog.dismiss()
-        //        super@HomeActivity.onBackPressed()
-        //    }
-//
-        //    fun cancel(dialog: Dialog) {
-        //        dialog.dismiss()
-        //    }
-        //})
+        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
+            drawer_layout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
