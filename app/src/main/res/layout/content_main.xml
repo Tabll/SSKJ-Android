@@ -17,15 +17,23 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" /-->
 
+    <!--ViewPager-->
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <!--底部导航栏-->
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:itemBackground="@android:color/transparent"
-        app:itemIconTint="@android:color/darker_gray"
-        app:itemTextColor="@android:color/darker_gray"
+        app:itemIconTint="@drawable/selector_bottom_navigation_view"
+        app:itemTextColor="@drawable/selector_bottom_navigation_view"
         app:layout_constraintBottom_toBottomOf="parent"
-
         app:menu="@menu/bottom_navigation_main" />
+
+
 
 </android.support.constraint.ConstraintLayout>

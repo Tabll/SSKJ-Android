@@ -1,17 +1,21 @@
 package cn.tabll.sskj
 
 import android.os.Bundle
+import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
+import android.support.v4.view.ViewPager
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import cn.tabll.sskj.adapter.ViewPagerAdapter
 import cn.tabll.sskj.tools.BottomNavigationViewHelper
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.error
 import org.jetbrains.anko.info
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -41,19 +45,102 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         init()
         log.info("主页面已启动")
+
+
     }
 
     private fun init(){
         val bottomNavigationViewHelper = BottomNavigationViewHelper()
         bottomNavigationViewHelper.disableShiftMode(bottom_navigation_view) //解决底部导航栏问题
+
+        val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.action_main_page -> {
+                    //view_pager.currentItem= 0
+                    //toast("1")
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.action_water_quality -> {
+                    //view_pager.currentItem = 1
+                    //toast("2")
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.action_shop -> {
+                    //view_pager.currentItem= 2
+                    //toast("3")
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.action_mine -> {
+                    //view_pager.currentItem = 3
+                    //toast("4")
+                    return@OnNavigationItemSelectedListener true
+                }
+            }
+            false
+        }
+        bottom_navigation_view.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+
+        val mOnPageChangeListener = object : ViewPager.OnPageChangeListener{
+            override fun onPageScrollStateChanged(state: Int) {
+
+            }
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+
+            }
+
+            override fun onPageSelected(position: Int) {
+
+                bottom_navigation_view.selectedItemId = position
+                when (position){
+                    0 -> bottom_navigation_view.selectedItemId = R.id.action_main_page
+                    1 -> bottom_navigation_view.selectedItemId = R.id.action_water_quality
+                    2 -> bottom_navigation_view.selectedItemId = R.id.action_shop
+                    3 -> bottom_navigation_view.selectedItemId = R.id.action_mine
+                    else -> log.error("ViewPage超出底部导航栏个数")
+                }
+//
+//
+                //findViewById<BottomNavigationItemView>(bottom_navigation_view.selectedItemId)
+//
+                //bottom_navigation_view.selectedItemId
+//
+
+                //if (bottom_navigation_view.selectedItemId != null) {
+                //    menuItem!!.*isChecked* = false
+                //} else {
+                //    bottom_navigation_view.*menu*.getItem(0).*isChecked* = false
+                //}
+                //menuItem = bottom_navigation_view.*menu*.getItem(position)
+                //menuItem!!.*isChecked* = true
+            }
+        }
+
+        view_pager.addOnPageChangeListener(mOnPageChangeListener)
+        view_pager.adapter = ViewPagerAdapter(supportFragmentManager)
+
+
+
     }
 
     override fun onBackPressed() {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-            drawer_layout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
+        //if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
+        //    drawer_layout.closeDrawer(GravityCompat.START)
+        //} else {
+        //    super.onBackPressed()
+        //}
+
+        finish()
+        //dialogOk("确定要退出么", object : DialogLinstener() {
+        //    fun confirm(dialog: Dialog) {
+        //        dialog.dismiss()
+        //        super@HomeActivity.onBackPressed()
+        //    }
+//
+        //    fun cancel(dialog: Dialog) {
+        //        dialog.dismiss()
+        //    }
+        //})
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
