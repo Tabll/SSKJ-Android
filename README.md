@@ -14,7 +14,7 @@
 - v0.0.2 - 基本功能构建
 
 ## 运行环境
-### Android 5.1 - Android 8.1
+### Android 5.1 - Android P
 > TargetSDK: 27 <br>
 > MinSDK: 22
 
