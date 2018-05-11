@@ -5,14 +5,12 @@ import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v4.view.ViewPager
-import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import cn.tabll.sskj.adapter.ViewPagerAdapter
+import cn.tabll.sskj.adapters.ViewPagerAdapter
 import cn.tabll.sskj.tools.BottomNavigationViewHelper
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.error
@@ -29,17 +27,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
+        //setSupportActionBar(toolbar)
 
         //fab.setOnClickListener { view ->
         //    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
         //            .setAction("Action", null).show()
         //}
 
-        val toggle = ActionBarDrawerToggle(
-                this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        drawer_layout.addDrawerListener(toggle)
-        toggle.syncState()
+        //val toggle = ActionBarDrawerToggle(
+        //        this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        //drawer_layout.addDrawerListener(toggle)
+        //toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
 
@@ -98,6 +96,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         view_pager.addOnPageChangeListener(mOnPageChangeListener) //ViewPager事件监听
         view_pager.adapter = ViewPagerAdapter(supportFragmentManager) //ViewPager适配器
+        //view_pager.setPageTransformer(true,tran)
     }
 
     override fun onBackPressed() {

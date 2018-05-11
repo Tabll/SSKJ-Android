@@ -1,4 +1,4 @@
-package cn.tabll.sskj.adapter
+package cn.tabll.sskj.adapters
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
