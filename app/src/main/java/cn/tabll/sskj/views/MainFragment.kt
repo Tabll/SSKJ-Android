@@ -48,7 +48,7 @@ class MainFragment : Fragment() {
                             }.lparams(width = matchParent, height = dip(56)){
                                 collapseMode = CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_PIN
                             }
-                        }.lparams(width = matchParent, height = dip(200)){
+                        }.lparams(width = matchParent, height = dip(300)){
                             scrollFlags = AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED
 
                         }

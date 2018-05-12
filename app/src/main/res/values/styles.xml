@@ -4,15 +4,21 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- 在这里定制你的主题 -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
         <item name="android:windowLightNavigationBar">true</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <!--开屏页主题-->
+    <style name="AppTheme.StartActivity">
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
