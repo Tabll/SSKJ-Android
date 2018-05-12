@@ -12,12 +12,11 @@ class ViewPagerAdapter(fm: android.support.v4.app.FragmentManager?) : FragmentPa
     private val fragmentList = listOf(MainFragment(), WaterQualityFragment(), ShopFragment(), MineFragment())
 
     override fun getItem(position: Int): Fragment {
-
         return fragmentList[position]
     }
 
     override fun getCount(): Int {
-        return 4
+        return fragmentList.size
     }
 
 

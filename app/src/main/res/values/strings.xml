@@ -13,4 +13,6 @@
     <string name="water_quality">水质</string>
     <string name="shop">商城</string>
     <string name="mine">我的</string>
+
+    <string name="water_quality_over_all">水质概览</string>
 </resources>

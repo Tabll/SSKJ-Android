@@ -1,8 +1,9 @@
 package anko
 
 import android.app.Activity
+import android.graphics.Color
 import android.os.Bundle
-import android.widget.ImageView
+import android.view.Gravity
 import org.jetbrains.anko.*
 import org.jetbrains.anko.support.v4.*
 import org.jetbrains.anko.appcompat.v7.*
@@ -30,9 +31,12 @@ class ZFragmentMainActivity : Activity() {
 						id = R.id.fragment_main_toolbarLayout
 						//android:fitsSystemWindows = true //not support attribute
 						//app:layout_scrollFlags = scroll|exitUntilCollapsed //not support attribute
-						imageView {
-							imageResource = R.drawable.launch_image
-							scaleType = ImageView.ScaleType.CENTER_CROP
+						textView {
+							text = resources.getString(R.string.water_quality_over_all)
+							textColor = Color.WHITE
+						}.lparams {
+							gravity = Gravity.CENTER_HORIZONTAL
+							topMargin = dip(20)
 						}
 						//toolbar {
 						//	id = R.id.fragment_main_toolbar
