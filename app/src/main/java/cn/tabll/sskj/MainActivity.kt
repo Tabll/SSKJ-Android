@@ -9,12 +9,12 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import cn.tabll.sskj.adapters.ViewPagerAdapter
+import cn.tabll.sskj.effects.WaterWaveView
 import cn.tabll.sskj.tools.BottomNavigationViewHelper
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.error
-import org.jetbrains.anko.info
+import kotlinx.android.synthetic.main.z_fragment_main.*
+import org.jetbrains.anko.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -97,6 +97,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         view_pager.addOnPageChangeListener(mOnPageChangeListener) //ViewPager事件监听
         view_pager.adapter = ViewPagerAdapter(supportFragmentManager) //ViewPager适配器
         //view_pager.setPageTransformer(true,tran)
+
+
+
+
     }
 
     override fun onBackPressed() {

@@ -38,6 +38,8 @@ class ZFragmentMainActivity : Activity() {
 							gravity = Gravity.CENTER_HORIZONTAL
 							topMargin = dip(20)
 						}
+						//waterWaveView {
+						//}.lparams(width = matchParent, height = matchParent)
 						//toolbar {
 						//	id = R.id.fragment_main_toolbar
 						//	//app:layout_collapseMode = pin //not support attribute

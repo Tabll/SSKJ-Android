@@ -33,6 +33,11 @@
                     android:text="@string/water_quality_over_all"
                     android:textColor="@android:color/white"/>
 
+                <cn.tabll.sskj.effects.WaterWaveView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true" />
+
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/fragment_main_toolbar"
                     android:layout_width="match_parent"
