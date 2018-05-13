@@ -1,6 +1,5 @@
 package cn.tabll.sskj.views
 
-import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
@@ -12,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import cn.tabll.sskj.R
 import cn.tabll.sskj.effects.WaterWaveView
+import kotlinx.android.synthetic.main.view_water_wave.view.*
 import org.jetbrains.anko.*
 import org.jetbrains.anko.appcompat.v7.toolbar
 import org.jetbrains.anko.design.appBarLayout
@@ -21,6 +21,7 @@ import org.jetbrains.anko.support.v4.UI
 import org.jetbrains.anko.support.v4.nestedScrollView
 
 class MainFragment : Fragment() {
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return UI {
             linearLayout {
@@ -34,7 +35,12 @@ class MainFragment : Fragment() {
                             fitsSystemWindows = true
 
                             //WaterWaveView(this.context).lparams(width = dip(100), height = dip(100))
-                            include<View>(R.layout.view_water_wave)
+                            include<View>(R.layout.view_water_wave).water_wave_view
+
+                            //waterWaveView.startWave()
+                            //water_wave_view.stopWave()
+                            water_wave_view.setWaterLevel(0.6f)
+                            water_wave_view.startWave()
 
                             textView {
                                 text = resources.getString(R.string.water_quality_over_all)
@@ -64,7 +70,6 @@ class MainFragment : Fragment() {
                             }
                         }.lparams(width = matchParent, height = dip(300)){
                             scrollFlags = AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED
-
                         }
                     }.lparams(width = matchParent)
                     nestedScrollView {

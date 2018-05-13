@@ -13,8 +13,14 @@ import cn.tabll.sskj.effects.WaterWaveView
 import cn.tabll.sskj.tools.BottomNavigationViewHelper
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import kotlinx.android.synthetic.main.z_fragment_main.*
 import org.jetbrains.anko.*
+import android.view.LayoutInflater
+import android.widget.Button
+import cn.tabll.sskj.views.MainFragment
+import kotlinx.android.synthetic.main.view_water_wave.*
+import org.jetbrains.anko.support.v4.find
+import org.jetbrains.anko.support.v4.toast
+
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -22,8 +28,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        //window.statusBarColor = Color.BLUE
-        //window.navigationBarColor = Color.BLUE
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -95,11 +99,29 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
         view_pager.addOnPageChangeListener(mOnPageChangeListener) //ViewPager事件监听
-        view_pager.adapter = ViewPagerAdapter(supportFragmentManager) //ViewPager适配器
+        val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
+        //val waterWaveView = viewPagerAdapter.mainFragment().find<WaterWaveView>(R.id.water_wave_view)
+        //waterWaveView.startWave()
+        view_pager.adapter = viewPagerAdapter //ViewPager适配器
+
+
+        //fragmentManager.findFragmentById(R.id.main_fragment).view.find<WaterWaveView>(R.id.water_wave_view)
+        //view_pager.adapter as ViewPagerAdapter
+        //val waterWaveView = (view_pager.adapter as ViewPagerAdapter).mainFragment().find<WaterWaveView>(R.id.water_wave_view)
         //view_pager.setPageTransformer(true,tran)
 
+        //waterWaveView.startWave()
+
+//
+        ////val water = viewPagerAdapter.getFragment(0).find<WaterWaveView>(R.id.water_wave_view)
+        ////
+        //waterWaveView.setWaterLevel(0.6f)
+        //waterWaveView.startWave()
+        //viewPagerAdapter.mainFragment().find<WaterWaveView>(R.id.water_wave_view)
 
 
+        //
+        // toast("hello")
 
     }
 

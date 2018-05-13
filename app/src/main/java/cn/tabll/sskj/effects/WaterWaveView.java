@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
@@ -14,16 +15,30 @@ import android.view.View;
 
 import cn.tabll.sskj.R;
 
+/**
+ * 此部分代码受https://github.com/Geekince/WaterWaveView启发
+ **/
+
 public class WaterWaveView extends View {
     private Context mContext;
+    private int mScreenWidth = getWidth(); //控件的宽度（虚拟机里是1080）
+    private int mScreenHeight = getHeight(); //控件的高度（虚拟机里是747）
 
-    private int mScreenWidth;
-    private int mScreenHeight;
+    private float mScreenWidth2;
+    private float mScreenHeight2;
+    private float mScreenWidth4;
+    //private float mScreenHeight4;
+    float f1;
+
+    float waveWidth; //当前油量线的长度
+    float offsetWidth; //与圆半径的偏移量
+    float startAngle, sweepAngle; //扇形的起始角度和扫过角度
+    int startX, endX; //起始振动X坐标，结束振动X坐标
+
 
     private Paint mRingPaint;
     private Paint mCirclePaint;
     private Paint mWavePaint;
-    private Paint linePaint;
     private Paint flowPaint;
     private Paint leftPaint;
 
@@ -41,47 +56,38 @@ public class WaterWaveView extends View {
     final float f = 0.033F;
     int mAlpha = 50;// 透明度
     float mAmplitude = 10.0F; // 振幅
-    private float mWaterLevel = 0.5F;// 水高(0~1)
+    private float mWaterLevel = 0.5F;// 默认水高0.5(范围：0~1)
     private Path mPath;
 
-    String flowNum = "1024M";
-    String flowLeft = "还剩余";
+    RectF mRectF;
 
-    /**
-     * @param context c
-     */
+    String flowNum = "89%";
+    String flowLeft = "水质良好";
+
     public WaterWaveView(Context context) {
         super(context);
         mContext = context;
-        init(mContext);
+        init();
     }
 
-    /**
-     * @param context c
-     * @param attrs attrs
-     */
     public WaterWaveView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
-        init(mContext);
+        init();
     }
-//
-    /**
-     * @param context c
-     * @param attrs attrs
-     * @param defStyleAttr dsa
-     */
+
     public WaterWaveView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mContext = context;
-        init(mContext);
+        init();
     }
 
-    public void setmWaterLevel(float mWaterLevel) {
+    public void setWaterLevel(float mWaterLevel) {
         this.mWaterLevel = mWaterLevel;
     }
 
-    private void init(Context context) {
+    private void init() {
+        mRectF = new RectF();
         mRingPaint = new Paint();
         mRingPaint.setColor(mRingColor);
         mRingPaint.setAlpha(50);
@@ -95,7 +101,7 @@ public class WaterWaveView extends View {
         mCirclePaint.setAntiAlias(true);
         mCirclePaint.setStrokeWidth(mCircleSTROKEWidth);
 
-        linePaint = new Paint();
+        Paint linePaint = new Paint();
         linePaint.setColor(mCircleColor);
         linePaint.setStyle(Paint.Style.STROKE);
         linePaint.setAntiAlias(true);
@@ -111,7 +117,7 @@ public class WaterWaveView extends View {
         leftPaint.setColor(mCircleColor);
         leftPaint.setStyle(Paint.Style.FILL);
         leftPaint.setAntiAlias(true);
-        leftPaint.setTextSize(18);
+        leftPaint.setTextSize(36); //字体大小，原18
 
         mWavePaint = new Paint();
         mWavePaint.setStrokeWidth(1.0F);
@@ -119,18 +125,20 @@ public class WaterWaveView extends View {
         mWavePaint.setAlpha(mAlpha);
         mPath = new Path();
 
-        mHandler = new Handler() {
+        mHandler = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(android.os.Message msg) {
                 if (msg.what == 0) {
                     invalidate();
-                    if (mStarted) {
-                        // 不断发消息给自己，使自己不断被重绘
+                    if (mStarted) { //不断发消息给自己，使自己不断被重绘
                         mHandler.sendEmptyMessageDelayed(0, 60L);
                     }
                 }
             }
         };
+
+
+
     }
 
     @Override
@@ -138,18 +146,19 @@ public class WaterWaveView extends View {
         int width = measure(widthMeasureSpec, true);
         int height = measure(heightMeasureSpec, false);
         if (width < height) {
-            setMeasuredDimension(width, width);
+            //setMeasuredDimension(width, width);
+            setMeasuredDimension(width, heightMeasureSpec);
         } else {
-            setMeasuredDimension(height, height);
+            //setMeasuredDimension(height, height);
+            setMeasuredDimension(widthMeasureSpec, height);
         }
-
     }
 
     /**
-     * @category 测量
-     * @param measureSpec
-     * @param isWidth
-     * @return
+     * 测量
+     * @param measureSpec measureSpec
+     * @param isWidth isWidth
+     * @return result
      */
     private int measure(int measureSpec, boolean isWidth) {
         int result;
@@ -175,90 +184,63 @@ public class WaterWaveView extends View {
     }
 
     @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
+    protected void onSizeChanged(int w, int h, int oldW, int oldH) {
+        super.onSizeChanged(w, h, oldW, oldH);
         mScreenWidth = w;
         mScreenHeight = h;
+
+        mScreenWidth2 = mScreenWidth / 2;
+        mScreenHeight2 = mScreenHeight / 2;
+        mScreenWidth4 = mScreenWidth / 4;
+        //mScreenHeight4 = mScreenHeight / 4;
+        mRectF.set(mScreenWidth4, mScreenHeight2 - mScreenWidth4, mScreenWidth * 0.75f, mScreenHeight2 + mScreenWidth4 ); //绘制水面静止时的高度
+        float centerOffset = Math.abs(mScreenWidth2 * mWaterLevel - mScreenWidth4);
+        float hoAngle = (float) (Math.asin(centerOffset / (mScreenWidth4)) * 180 / Math.PI);
+        f1 = mScreenHeight - ((mScreenHeight - mScreenWidth2) / 2 + mScreenWidth2 * mWaterLevel) - mAmplitude;
+        waveWidth = (float)Math.sqrt(mScreenWidth * mScreenWidth / 16 - centerOffset * centerOffset);
+        offsetWidth = mScreenWidth4 - waveWidth; //与圆半径的偏移量
+        if (mWaterLevel > 0.5F) {
+            startAngle = 360F - hoAngle;
+            sweepAngle = 180F + 2 * hoAngle;
+        } else {
+            startAngle = hoAngle;
+            sweepAngle = 180F - 2 * hoAngle;
+        }
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        // 得到控件的宽高
-        int width = getWidth();
-        int height = getHeight();
-        setBackgroundColor(mContext.getResources().getColor( R.color.colorAccent));
-
-        //计算当前油量线和水平中线的距离
-        float centerOffset = Math.abs(mScreenWidth / 2 * mWaterLevel - mScreenWidth / 4);
-        //计算油量线和与水平中线的角度
-        float horiAngle = (float)(Math.asin(centerOffset / (mScreenWidth / 4)) * 180 / Math.PI);
-        //扇形的起始角度和扫过角度
-        float startAngle, sweepAngle;
-        if (mWaterLevel > 0.5F) {
-            startAngle = 360F - horiAngle;
-            sweepAngle = 180F + 2 * horiAngle;
-        } else {
-            startAngle = horiAngle;
-            sweepAngle = 180F - 2 * horiAngle;
-        }
-
-        canvas.drawLine(mScreenWidth * 3 / 8, mScreenHeight * 5 / 8,
-                mScreenWidth * 5 / 8, mScreenHeight * 5 / 8, linePaint);
+        setBackgroundColor(mContext.getResources().getColor( R.color.colorPrimary)); //控件背景颜色
+        //canvas.drawLine(mScreenWidth * 3 / 8, mScreenHeight * 5 / 8, mScreenWidth * 5 / 8, mScreenHeight * 5 / 8, linePaint); //画一条线
         float num = flowPaint.measureText(flowNum);
-        canvas.drawText(flowNum, mScreenWidth * 4 / 8 - num / 2,
-                mScreenHeight * 4 / 8, flowPaint);
+        canvas.drawText(flowNum, mScreenWidth2 - num / 2, mScreenHeight * 4 / 7, flowPaint);
         float left = leftPaint.measureText(flowLeft);
-        canvas.drawText(flowLeft, mScreenWidth * 4 / 8 - left / 2,
-                mScreenHeight * 3 / 8, leftPaint);
-
-        // 如果未开始（未调用startWave方法）,绘制一个扇形
-        if ((!mStarted) || (mScreenWidth == 0) || (mScreenHeight == 0)) {
-            // 绘制,即水面静止时的高度
-            RectF oval = new RectF(mScreenWidth / 4, mScreenHeight / 4,
-                    mScreenWidth * 3 / 4, mScreenHeight * 3 / 4 );
-            canvas.drawArc(oval, startAngle, sweepAngle, false, mWavePaint);
+        canvas.drawText(flowLeft, mScreenWidth2 - left / 2, mScreenHeight * 3 / 7, leftPaint);
+        canvas.drawArc(mRectF, startAngle, sweepAngle, false, mWavePaint); //绘制水波下的图形
+        if ((!mStarted) || (mScreenWidth == 0) || (mScreenHeight == 0)) { // 如果未开始则直接返回
             return;
         }
-        // 绘制,即水面静止时的高度
-        // 绘制,即水面静止时的高度
-        RectF oval = new RectF(mScreenWidth / 4, mScreenHeight / 4,
-                mScreenWidth * 3 / 4, mScreenHeight * 3 / 4 );
-        canvas.drawArc(oval, startAngle, sweepAngle, false, mWavePaint);
-
         if (this.c >= 8388607L) {
             this.c = 0L;
         }
-        // 每次onDraw时c都会自增
-        c = (1L + c);
-        float f1 = mScreenHeight * (1.0F - (0.25F + mWaterLevel / 2)) - mAmplitude;
-        //当前油量线的长度
-        float waveWidth = (float)Math.sqrt(mScreenWidth * mScreenWidth / 16 - centerOffset * centerOffset);
-        //与圆半径的偏移量
-        float offsetWidth = mScreenWidth / 4 - waveWidth;
-
+        c = 1L + c; //在onDraw时c自增1
         int top = (int) (f1 + mAmplitude);
         mPath.reset();
-        //起始振动X坐标，结束振动X坐标
-        int startX, endX;
         if (mWaterLevel > 0.50F) {
-            startX = (int) (mScreenWidth / 4 + offsetWidth);
-            endX = (int) (mScreenWidth / 2 + mScreenWidth / 4 - offsetWidth);
+            startX = (int) (mScreenWidth4 + offsetWidth);
+            endX = (int) (mScreenWidth2 + mScreenWidth4 - offsetWidth);
         } else {
-            startX = (int) (mScreenWidth / 4 + offsetWidth - mAmplitude);
-            endX = (int) (mScreenWidth / 2 + mScreenWidth / 4 - offsetWidth + mAmplitude);
+            startX = (int) (mScreenWidth4 + offsetWidth - mAmplitude);
+            endX = (int) (mScreenWidth2 + mScreenWidth4 - offsetWidth + mAmplitude);
         }
-        // 波浪效果
-        while (startX < endX) {
-            int startY = (int)
-                    (f1 - mAmplitude * Math.sin(Math.PI * (2.0F * (startX + this.c * width * this.f)) / width));
-            canvas.drawLine(startX, startY, startX, top, mWavePaint);
+        while (startX < endX) { // 波浪效果
+            int startY = (int)(f1 - mAmplitude * Math.sin(Math.PI * (2.0F * (startX + this.c * mScreenWidth * this.f)) / mScreenWidth));
+            canvas.drawLine(startX, startY, startX, top, mWavePaint); //动态波浪
             startX++;
         }
-        canvas.drawCircle(mScreenWidth / 2, mScreenHeight / 2,
-                mScreenWidth / 4 + mRingSTROKEWidth / 2, mRingPaint);
-
-        canvas.drawCircle(mScreenWidth / 2, mScreenHeight / 2, mScreenWidth / 4, mCirclePaint);
+        canvas.drawCircle(mScreenWidth2, mScreenHeight2, mScreenWidth4 + mRingSTROKEWidth / 2, mRingPaint); //绘制淡粗圆
+        canvas.drawCircle(mScreenWidth2, mScreenHeight2, mScreenWidth4, mCirclePaint); //绘制亮细圆
         canvas.restore();
     }
 
@@ -282,6 +264,7 @@ public class WaterWaveView extends View {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         // 关闭硬件加速，防止异常unsupported operation exception
+        //this.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         this.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
     }
 
@@ -291,7 +274,7 @@ public class WaterWaveView extends View {
     }
 
     /**
-     * @category 开始波动
+     * 波纹开始
      */
     public void startWave() {
         if (!mStarted) {
@@ -302,7 +285,7 @@ public class WaterWaveView extends View {
     }
 
     /**
-     * @category 停止波动
+     * 波纹停止
      */
     public void stopWave() {
         if (mStarted) {
@@ -313,21 +296,14 @@ public class WaterWaveView extends View {
     }
 
     /**
-     * @category 保存状态
+     * 保存状态
      */
     static class SavedState extends BaseSavedState {
         int progress;
-
-        /**
-         * Constructor called from { ProgressBar#onSaveInstanceState() }
-         */
         SavedState(Parcelable superState) {
             super(superState);
         }
 
-        /**
-         * Constructor called from {@link #CREATOR}
-         */
         private SavedState(Parcel in) {
             super(in);
             progress = in.readInt();
