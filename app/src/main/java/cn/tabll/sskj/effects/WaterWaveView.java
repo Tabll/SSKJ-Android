@@ -11,6 +11,7 @@ import android.os.Looper;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.View;
 
 import cn.tabll.sskj.R;
@@ -20,9 +21,11 @@ import cn.tabll.sskj.R;
  **/
 
 public class WaterWaveView extends View {
+
     private Context mContext;
     private int mScreenWidth = getWidth(); //控件的宽度（虚拟机里是1080）
     private int mScreenHeight = getHeight(); //控件的高度（虚拟机里是747）
+    private int TEXT_SIZE; //字体大小
 
     private float mScreenWidth2;
     private float mScreenHeight2;
@@ -111,13 +114,13 @@ public class WaterWaveView extends View {
         flowPaint.setColor(mCircleColor);
         flowPaint.setStyle(Paint.Style.FILL);
         flowPaint.setAntiAlias(true);
-        flowPaint.setTextSize(36);
+
 
         leftPaint = new Paint();
         leftPaint.setColor(mCircleColor);
         leftPaint.setStyle(Paint.Style.FILL);
         leftPaint.setAntiAlias(true);
-        leftPaint.setTextSize(36); //字体大小，原18
+
 
         mWavePaint = new Paint();
         mWavePaint.setStrokeWidth(1.0F);
@@ -206,6 +209,13 @@ public class WaterWaveView extends View {
             startAngle = hoAngle;
             sweepAngle = 180F - 2 * hoAngle;
         }
+
+
+        float ratioWidth = (float)mScreenWidth / 1080;
+
+        TEXT_SIZE = Math.round(50 * ratioWidth);
+        leftPaint.setTextSize(TEXT_SIZE); //字体大小，原18
+        flowPaint.setTextSize(TEXT_SIZE);
     }
 
     @Override

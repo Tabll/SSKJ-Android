@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="main_fragment" type="id" />
+    <item name="view_water_wave_include" type="id" />
 </resources>
