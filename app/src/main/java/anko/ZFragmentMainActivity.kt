@@ -12,6 +12,7 @@ import cn.tabll.sskj.R
 import org.jetbrains.anko.design.appBarLayout
 import org.jetbrains.anko.design.collapsingToolbarLayout
 import org.jetbrains.anko.design.coordinatorLayout
+import org.jetbrains.anko.recyclerview.v7.recyclerView
 
 /**
  * Generate with Plugin
@@ -39,7 +40,9 @@ class ZFragmentMainActivity : Activity() {
 							topMargin = dip(20)
 						}
 						//waterWaveView {
-						//}.lparams(width = matchParent, height = matchParent)
+						//}.lparams(width = matchParent, height = matchParent) {
+						//	centerInParent()
+						//}
 						//toolbar {
 						//	id = R.id.fragment_main_toolbar
 						//	//app:layout_collapseMode = pin //not support attribute
@@ -48,9 +51,10 @@ class ZFragmentMainActivity : Activity() {
 				}.lparams(width = matchParent)
 				nestedScrollView {
 					//app:layout_behavior = @string/appbar_scrolling_view_behavior //not support attribute
-					listView {
-						id = R.id.main_fragment_listView
-					}.lparams(width = matchParent, height = matchParent)
+					swipeRefreshLayout {
+						//recyclerView {
+						//}.lparams(width = matchParent, height = matchParent)
+					}
 				}.lparams(width = matchParent, height = matchParent)
 			}.lparams(width = matchParent, height = matchParent)
 		}

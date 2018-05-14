@@ -87,6 +87,7 @@ public class WaterWaveView extends View {
 
     public void setWaterLevel(float mWaterLevel) {
         this.mWaterLevel = mWaterLevel;
+        this.flowNum = String.valueOf(mWaterLevel * 100) + "%";
     }
 
     private void init() {
@@ -110,17 +111,15 @@ public class WaterWaveView extends View {
         linePaint.setAntiAlias(true);
         linePaint.setStrokeWidth(mLineSTROKEWidth);
 
-        flowPaint = new Paint();
+        flowPaint = new Paint(); //文字画笔
         flowPaint.setColor(mCircleColor);
         flowPaint.setStyle(Paint.Style.FILL);
         flowPaint.setAntiAlias(true);
 
-
-        leftPaint = new Paint();
+        leftPaint = new Paint(); //文字画笔2
         leftPaint.setColor(mCircleColor);
         leftPaint.setStyle(Paint.Style.FILL);
         leftPaint.setAntiAlias(true);
-
 
         mWavePaint = new Paint();
         mWavePaint.setStrokeWidth(1.0F);

@@ -19,13 +19,16 @@ import org.jetbrains.anko.appcompat.v7.toolbar
 import org.jetbrains.anko.design.appBarLayout
 import org.jetbrains.anko.design.collapsingToolbarLayout
 import org.jetbrains.anko.design.coordinatorLayout
+import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.jetbrains.anko.support.v4.UI
 import org.jetbrains.anko.support.v4.nestedScrollView
+import org.jetbrains.anko.support.v4.swipeRefreshLayout
 
 class MainFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
+        water_wave_view.setWaterLevel(0.7f)
         water_wave_view.startWave()
     }
 
@@ -85,10 +88,15 @@ class MainFragment : Fragment() {
                         }
                     }.lparams(width = matchParent)
                     nestedScrollView {
+                        swipeRefreshLayout {
+                            recyclerView {
 
-                        listView {
-                            id = R.id.main_fragment_listView
+                            }
                         }.lparams(width = matchParent, height = matchParent)
+
+                        //listView {
+                        //    id = R.id.main_fragment_listView
+                        //}.lparams(width = matchParent, height = matchParent)
 
                     }.lparams(width = matchParent, height = matchParent){
                         behavior = AppBarLayout.ScrollingViewBehavior()
