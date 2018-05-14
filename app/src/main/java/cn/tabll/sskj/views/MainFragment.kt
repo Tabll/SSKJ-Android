@@ -10,7 +10,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import cn.tabll.sskj.Listener.AppBarStateChangeListener
+import cn.tabll.sskj.listener.AppBarStateChangeListener
 import cn.tabll.sskj.R
 import kotlinx.android.synthetic.main.view_water_wave.*
 import kotlinx.android.synthetic.main.view_water_wave.view.*
@@ -59,13 +59,6 @@ class MainFragment : Fragment() {
                                     State.COLLAPSED -> water_wave_view.stopWave()
                                     else -> return
                                 }
-                                //if( state == State.EXPANDED ) {
-                                //    water_wave_view.startWave()
-                                //}else if(state == State.COLLAPSED){
-                                //    water_wave_view.stopWave()
-                                //}else {
-                                //    //water_wave_view.stopWave()
-                                //}
                             }
                         }
                         addOnOffsetChangedListener(appBarStateChangeListener)
@@ -75,12 +68,8 @@ class MainFragment : Fragment() {
                             contentScrim = resources.getDrawable(R.color.colorPrimary, null)
                             fitsSystemWindows = true
 
-                            //WaterWaveView(this.context).lparams(width = dip(100), height = dip(100))
                             include<View>(R.layout.view_water_wave)
-                            //waterWaveView.startWave()
-                            //water_wave_view.stopWave()
-                            //water_wave_view.setWaterLevel(0.6f)
-                            //water_wave_view.startWave()
+
                             textView {
                                 text = resources.getString(R.string.water_quality_over_all)
                                 textColor = Color.WHITE
@@ -88,18 +77,9 @@ class MainFragment : Fragment() {
                                 gravity = Gravity.CENTER_HORIZONTAL
                                 topMargin = dip(20)
                             }
-                            //waterWaveView.setmWaterLevel(0.7f)
-                            //waterWaveView.startWave()
-                            //imageView {
-                            //    imageResource = R.drawable.launch_image
-                            //    scaleType = ImageView.ScaleType.CENTER_CROP
-                            //}.lparams{
-                            //    collapseMode = CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_PARALLAX
-                            //    parallaxMultiplier = 0.7f
-                            //}
-                            //---app:layout_scrollFlags = scroll|exitUntilCollapsed //not support attribute
+
                             toolbar {
-                                //---app:layout_collapseMode = pin //not support attribute
+
                             }.lparams(width = matchParent, height = dip(56)){
                                 collapseMode = CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_PIN
                             }
@@ -113,7 +93,6 @@ class MainFragment : Fragment() {
                             id = R.id.main_fragment_listView
                         }.lparams(width = matchParent, height = matchParent)
 
-                        //---app:layout_behavior = @string/appbar_scrolling_view_behavior //not support attribute
                     }.lparams(width = matchParent, height = matchParent){
                         behavior = AppBarLayout.ScrollingViewBehavior()
                     }
