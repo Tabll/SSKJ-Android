@@ -34,15 +34,12 @@ class MainFragment : Fragment() {
         water_wave_view.stopWave()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        water_wave_view.stopWave()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        water_wave_view.stopWave()
-    }
+    //override fun onDestroy() {
+    //    super.onDestroy()
+    //}
+    //override fun onStop() {
+    //    super.onStop()
+    //}
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return UI {
