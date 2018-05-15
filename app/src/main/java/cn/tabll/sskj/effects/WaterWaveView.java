@@ -25,7 +25,6 @@ public class WaterWaveView extends View {
     private Context mContext;
     private int mScreenWidth = getWidth(); //控件的宽度（虚拟机里是1080）
     private int mScreenHeight = getHeight(); //控件的高度（虚拟机里是747）
-    private int TEXT_SIZE; //字体大小
 
     private float mScreenWidth2;
     private float mScreenHeight2;
@@ -212,7 +211,7 @@ public class WaterWaveView extends View {
 
         float ratioWidth = (float)mScreenWidth / 1080;
 
-        TEXT_SIZE = Math.round(50 * ratioWidth);
+        int TEXT_SIZE = Math.round(50 * ratioWidth);
         leftPaint.setTextSize(TEXT_SIZE); //字体大小，原18
         flowPaint.setTextSize(TEXT_SIZE);
     }

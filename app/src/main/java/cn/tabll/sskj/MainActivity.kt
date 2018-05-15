@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private var log = AnkoLogger<String>()
     private val mainFragment = MainFragment()
+    private var isWaterWaveStarted: Boolean = true
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,6 +62,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             when (item.itemId) {
                 R.id.action_main_page -> {
                     view_pager.currentItem = 0
+                    mainFragment.startWave()
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.action_water_quality -> {
@@ -97,6 +99,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     2 -> bottom_navigation_view.selectedItemId = R.id.action_shop
                     3 -> bottom_navigation_view.selectedItemId = R.id.action_mine
                     else -> log.error("ViewPage超出底部导航栏个数")
+                }
+                when (position){
+                    0 -> {
+                        mainFragment.startWave()
+                        isWaterWaveStarted = true
+                    }
+                    else -> {
+                        if (isWaterWaveStarted){
+                            mainFragment.stopWave()
+                            isWaterWaveStarted = false
+                        }
+                    }
                 }
             }
         }

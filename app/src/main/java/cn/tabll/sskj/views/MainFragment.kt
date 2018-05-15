@@ -26,6 +26,14 @@ import org.jetbrains.anko.support.v4.swipeRefreshLayout
 
 class MainFragment : Fragment() {
 
+    fun stopWave(){
+        this.water_wave_view.stopWave()
+    }
+
+    fun startWave(){
+        this.water_wave_view.startWave()
+    }
+
     override fun onStart() {
         super.onStart()
         water_wave_view.setWaterLevel(0.7f)
