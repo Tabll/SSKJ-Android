@@ -6,11 +6,8 @@ import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
-import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import cn.tabll.sskj.adapters.ViewPagerAdapter
-import cn.tabll.sskj.effects.WaterWaveView
 import cn.tabll.sskj.tools.BottomNavigationViewHelper
 import cn.tabll.sskj.views.MainFragment
 import cn.tabll.sskj.views.MineFragment
@@ -18,7 +15,6 @@ import cn.tabll.sskj.views.ShopFragment
 import cn.tabll.sskj.views.WaterQualityFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import kotlinx.android.synthetic.main.view_water_wave.*
 import org.jetbrains.anko.*
 
 
@@ -28,10 +24,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private val mainFragment = MainFragment()
     private var isWaterWaveStarted: Boolean = true
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
-
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         //setSupportActionBar(toolbar)
@@ -48,10 +41,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         nav_view.setNavigationItemSelectedListener(this)
 
-        init()
+        init() //初始化
         log.info("主页面已启动")
-
-
     }
 
     private fun init(){
@@ -83,22 +74,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         bottom_navigation_view.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener) //底部导航栏点击监听
 
         val mOnPageChangeListener = object : ViewPager.OnPageChangeListener{
-            override fun onPageScrollStateChanged(state: Int) {
-
-            }
-
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-
-            }
-
+            override fun onPageScrollStateChanged(state: Int) { }
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) { }
             override fun onPageSelected(position: Int) {
-                bottom_navigation_view.selectedItemId = position
-                when (position){
-                    0 -> bottom_navigation_view.selectedItemId = R.id.action_main_page
-                    1 -> bottom_navigation_view.selectedItemId = R.id.action_water_quality
-                    2 -> bottom_navigation_view.selectedItemId = R.id.action_shop
-                    3 -> bottom_navigation_view.selectedItemId = R.id.action_mine
-                    else -> log.error("ViewPage超出底部导航栏个数")
+                //bottom_navigation_view.selectedItemId = position
+                bottom_navigation_view.selectedItemId = when (position){
+                    0 -> R.id.action_main_page
+                    1 -> R.id.action_water_quality
+                    2 -> R.id.action_shop
+                    3 -> R.id.action_mine
+                    else -> {
+                        log.error("ViewPage超出底部导航栏个数")
+                        R.id.action_main_page
+                    }
                 }
                 when (position){
                     0 -> {
@@ -116,44 +104,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         view_pager.addOnPageChangeListener(mOnPageChangeListener) //ViewPager事件监听
         val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
-        //val waterWaveView = viewPagerAdapter.mainFragment().find<WaterWaveView>(R.id.water_wave_view)
-        //waterWaveView.startWave()
-
         viewPagerAdapter.addFragment(mainFragment)
         viewPagerAdapter.addFragment(WaterQualityFragment())
         viewPagerAdapter.addFragment(ShopFragment())
         viewPagerAdapter.addFragment(MineFragment())
-
         view_pager.adapter = viewPagerAdapter //ViewPager适配器
-
-        //mainFragment.startWave()
-        //mainFragment.water_wave_view
-        //mainFragment.find<WaterWaveView>(R.id.view_water_wave_include)
-        //val view = find<View>(R.id.main_fragment)
-        //fragmentManager.findFragmentById(R.id.main_fragment).view.find<WaterWaveView>(R.id.water_wave_view)
-        //view_pager.adapter as ViewPagerAdapter
-        //val waterWaveView = (view_pager.adapter as ViewPagerAdapter).mainFragment().find<WaterWaveView>(R.id.water_wave_view)
-        //view_pager.setPageTransformer(true,tran)
-        //waterWaveView.startWave()
-
-//
-        ////val water = viewPagerAdapter.getFragment(0).find<WaterWaveView>(R.id.water_wave_view)
-        ////
-        //waterWaveView.setWaterLevel(0.6f)
-        //waterWaveView.startWave()
-        //viewPagerAdapter.mainFragment().find<WaterWaveView>(R.id.water_wave_view)
-
-
-        //
-        // toast("hello")
-
     }
 
-    override fun onStart() {
-        super.onStart()
-        //mainFragment.startWave()
-    }
-
+    //override fun onStart() {
+    //    super.onStart()
+    //    //mainFragment.startWave()
+    //}
 
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
@@ -163,21 +124,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
-        return true
-    }
+    //override fun onCreateOptionsMenu(menu: Menu): Boolean {
+    //    // Inflate the menu; this adds items to the action bar if it is present.
+    //    menuInflater.inflate(R.menu.main, menu)
+    //    return true
+    //}
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        when (item.itemId) {
-            R.id.action_settings -> return true
-            else -> return super.onOptionsItemSelected(item)
-        }
-    }
+    //override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    //    // Handle action bar item clicks here. The action bar will
+    //    // automatically handle clicks on the Home/Up button, so long
+    //    // as you specify a parent activity in AndroidManifest.xml.
+    //    when (item.itemId) {
+    //        R.id.action_settings -> return true
+    //        else -> return super.onOptionsItemSelected(item)
+    //    }
+    //}
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.

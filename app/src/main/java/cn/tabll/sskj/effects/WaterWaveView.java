@@ -30,13 +30,10 @@ public class WaterWaveView extends View {
     private float mScreenHeight2;
     private float mScreenWidth4;
     //private float mScreenHeight4;
-    float f1;
+    private float f1;
 
-    float waveWidth; //当前油量线的长度
-    float offsetWidth; //与圆半径的偏移量
-    float startAngle, sweepAngle; //扇形的起始角度和扫过角度
-    int startX, endX; //起始振动X坐标，结束振动X坐标
-
+    private float offsetWidth; //与圆半径的偏移量
+    private float startAngle, sweepAngle; //扇形的起始角度和扫过角度
 
     private Paint mRingPaint;
     private Paint mCirclePaint;
@@ -132,14 +129,12 @@ public class WaterWaveView extends View {
                 if (msg.what == 0) {
                     invalidate();
                     if (mStarted) { //不断发消息给自己，使自己不断被重绘
-                        mHandler.sendEmptyMessageDelayed(0, 60L);
+                        //暂时停止绘制
+                        //mHandler.sendEmptyMessageDelayed(0, 60L);
                     }
                 }
             }
         };
-
-
-
     }
 
     @Override
@@ -189,7 +184,6 @@ public class WaterWaveView extends View {
         super.onSizeChanged(w, h, oldW, oldH);
         mScreenWidth = w;
         mScreenHeight = h;
-
         mScreenWidth2 = mScreenWidth / 2;
         mScreenHeight2 = mScreenHeight / 2;
         mScreenWidth4 = mScreenWidth / 4;
@@ -198,7 +192,7 @@ public class WaterWaveView extends View {
         float centerOffset = Math.abs(mScreenWidth2 * mWaterLevel - mScreenWidth4);
         float hoAngle = (float) (Math.asin(centerOffset / (mScreenWidth4)) * 180 / Math.PI);
         f1 = mScreenHeight - ((mScreenHeight - mScreenWidth2) / 2 + mScreenWidth2 * mWaterLevel) - mAmplitude;
-        waveWidth = (float)Math.sqrt(mScreenWidth * mScreenWidth / 16 - centerOffset * centerOffset);
+        float waveWidth = (float) Math.sqrt(mScreenWidth * mScreenWidth / 16 - centerOffset * centerOffset);
         offsetWidth = mScreenWidth4 - waveWidth; //与圆半径的偏移量
         if (mWaterLevel > 0.5F) {
             startAngle = 360F - hoAngle;
@@ -207,10 +201,7 @@ public class WaterWaveView extends View {
             startAngle = hoAngle;
             sweepAngle = 180F - 2 * hoAngle;
         }
-
-
         float ratioWidth = (float)mScreenWidth / 1080;
-
         int TEXT_SIZE = Math.round(50 * ratioWidth);
         leftPaint.setTextSize(TEXT_SIZE); //字体大小，原18
         flowPaint.setTextSize(TEXT_SIZE);
@@ -221,11 +212,8 @@ public class WaterWaveView extends View {
         super.onDraw(canvas);
         setBackgroundColor(mContext.getResources().getColor( R.color.colorPrimary)); //控件背景颜色
         //canvas.drawLine(mScreenWidth * 3 / 8, mScreenHeight * 5 / 8, mScreenWidth * 5 / 8, mScreenHeight * 5 / 8, linePaint); //画一条线
-        float num = flowPaint.measureText(flowNum);
-        canvas.drawText(flowNum, mScreenWidth2 - num / 2, mScreenHeight * 4 / 7, flowPaint);
-        float left = leftPaint.measureText(flowLeft);
-        canvas.drawText(flowLeft, mScreenWidth2 - left / 2, mScreenHeight * 3 / 7, leftPaint);
-        canvas.drawArc(mRectF, startAngle, sweepAngle, false, mWavePaint); //绘制水波下的图形
+
+
         if ((!mStarted) || (mScreenWidth == 0) || (mScreenHeight == 0)) { // 如果未开始则直接返回
             return;
         }
@@ -235,6 +223,8 @@ public class WaterWaveView extends View {
         c = 1L + c; //在onDraw时c自增1
         int top = (int) (f1 + mAmplitude);
         mPath.reset();
+        int startX;
+        int endX;
         if (mWaterLevel > 0.50F) {
             startX = (int) (mScreenWidth4 + offsetWidth);
             endX = (int) (mScreenWidth2 + mScreenWidth4 - offsetWidth);
@@ -247,9 +237,20 @@ public class WaterWaveView extends View {
             canvas.drawLine(startX, startY, startX, top, mWavePaint); //动态波浪
             startX++;
         }
+
+        drawStatic(canvas);
+
+        //canvas.restore();
+    }
+
+    private void drawStatic(Canvas canvas){
+        float num = flowPaint.measureText(flowNum);
+        canvas.drawText(flowNum, mScreenWidth2 - num / 2, mScreenHeight * 4 / 7, flowPaint);
+        float left = leftPaint.measureText(flowLeft);
+        canvas.drawText(flowLeft, mScreenWidth2 - left / 2, mScreenHeight * 3 / 7, leftPaint);
+        canvas.drawArc(mRectF, startAngle, sweepAngle, false, mWavePaint); //绘制水波下的图形
         canvas.drawCircle(mScreenWidth2, mScreenHeight2, mScreenWidth4 + mRingSTROKEWidth / 2, mRingPaint); //绘制淡粗圆
         canvas.drawCircle(mScreenWidth2, mScreenHeight2, mScreenWidth4, mCirclePaint); //绘制亮细圆
-        canvas.restore();
     }
 
     @Override

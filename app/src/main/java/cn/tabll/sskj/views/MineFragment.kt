@@ -12,9 +12,10 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import cn.tabll.sskj.R
 import org.jetbrains.anko.*
+import org.jetbrains.anko.cardview.v7.cardView
 import org.jetbrains.anko.design.appBarLayout
+import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.jetbrains.anko.support.v4.UI
-import org.jetbrains.anko.support.v4.nestedScrollView
 
 class MineFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -39,13 +40,15 @@ class MineFragment : Fragment() {
                         //app:popupTheme = @style/AppTheme.PopupOverlay //not support attribute
                     }.lparams(width = matchParent)
                 }.lparams(width = matchParent)
-                nestedScrollView {
+                cardView {
                     imageView {
                         //android:contentDescription = @string/shop //not support attribute
-                        imageResource = R.drawable.mine_image
-                        scaleType = ImageView.ScaleType.FIT_START
-                    }.lparams(width = matchParent)
-                }.lparams(width = matchParent, height = matchParent)
+                        imageResource = R.mipmap.ic_launcher
+                        //scaleType = ImageView.ScaleType.FIT_START
+                    }.lparams(width = dip(120), height = dip(120))
+                }.lparams(width = matchParent)
+                //recyclerView {
+                //}.lparams(width = matchParent, height = matchParent)
             }
         }.view
     }
