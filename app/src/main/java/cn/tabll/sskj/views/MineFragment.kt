@@ -10,11 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import cn.tabll.sskj.LoginActivity
 import cn.tabll.sskj.R
 import org.jetbrains.anko.*
 import org.jetbrains.anko.cardview.v7.cardView
 import org.jetbrains.anko.design.appBarLayout
-import org.jetbrains.anko.recyclerview.v7.recyclerView
+import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.support.v4.UI
 
 class MineFragment : Fragment() {
@@ -41,11 +42,25 @@ class MineFragment : Fragment() {
                     }.lparams(width = matchParent)
                 }.lparams(width = matchParent)
                 cardView {
-                    imageView {
-                        //android:contentDescription = @string/shop //not support attribute
-                        imageResource = R.mipmap.ic_launcher
-                        //scaleType = ImageView.ScaleType.FIT_START
-                    }.lparams(width = dip(120), height = dip(120))
+                    linearLayout {
+                        orientation = LinearLayout.VERTICAL
+                        imageView {
+                            //android:contentDescription = @string/shop //not support attribute
+                            imageResource = R.drawable.ic_company_logo
+                            scaleType = ImageView.ScaleType.FIT_START
+                            onClick {
+                                startActivity<LoginActivity>()
+                            }
+                        }.lparams(width = dip(120), height = dip(120)) {
+                            gravity = Gravity.CENTER
+                        }
+                        textView {
+                            text = "上善已与您相伴100天"
+                        }.lparams {
+                            gravity = Gravity.CENTER_HORIZONTAL
+                            bottomMargin = dip(20)
+                        }
+                    }.lparams(width = matchParent, height = matchParent)
                 }.lparams(width = matchParent)
                 //recyclerView {
                 //}.lparams(width = matchParent, height = matchParent)

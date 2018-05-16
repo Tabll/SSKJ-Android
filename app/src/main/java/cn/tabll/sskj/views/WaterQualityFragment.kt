@@ -15,8 +15,9 @@ class WaterQualityFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return UI {
             linearLayout {
-                imageView (R.drawable.water_quality_image){
+                imageView {
                     scaleType = ImageView.ScaleType.FIT_START
+                    //imageResource = R.drawable.water_quality_image
                     //android:contentDescription = @string/water_quality //not support attribute
                 }.lparams(width = dip(0)) {
                     weight = 1f

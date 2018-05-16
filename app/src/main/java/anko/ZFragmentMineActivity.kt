@@ -2,9 +2,10 @@ package anko
 
 import android.app.Activity
 import android.os.Bundle
-import android.widget.ImageView
 import android.graphics.Color
+import android.view.Gravity
 import android.widget.LinearLayout
+import android.widget.ImageView
 import org.jetbrains.anko.*
 import org.jetbrains.anko.appcompat.v7.*
 
@@ -32,11 +33,22 @@ class ZFragmentMineActivity : Activity() {
 				//}.lparams(width = matchParent)
 			}.lparams(width = matchParent)
 			cardView {
-				imageView {
-					//android:contentDescription = @string/shop //not support attribute
-					imageResource = R.drawable.ic_company_logo
-					scaleType = ImageView.ScaleType.FIT_START
-				}.lparams(width = dip(120), height = dip(120))
+				linearLayout {
+					orientation = LinearLayout.VERTICAL
+					imageView {
+						//android:contentDescription = @string/shop //not support attribute
+						imageResource = R.drawable.ic_company_logo
+						scaleType = ImageView.ScaleType.FIT_START
+					}.lparams(width = dip(120), height = dip(120)) {
+						gravity = Gravity.CENTER
+					}
+					textView {
+						text = "�������������100��"
+					}.lparams {
+						gravity = Gravity.CENTER_HORIZONTAL
+						bottomMargin = dip(20)
+					}
+				}.lparams(width = matchParent, height = matchParent)
 			}.lparams(width = matchParent)
 			recyclerView {
 			}.lparams(width = matchParent, height = matchParent)
