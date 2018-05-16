@@ -11,14 +11,26 @@
     <string name="action_settings">设置</string>
 
     <string name="company_name">上善科技</string>
+    <string name="company_speak">-您的智能污水处理专家-</string>
 
     <string name="main_page">首页</string>
     <string name="water_quality">水质</string>
     <string name="shop">商城</string>
     <string name="mine">我的</string>
 
+    <string name="water_quality_over_all">水质概览</string>
+
+    <!--注册页使用-->
     <string name="sign_in">登陆</string>
     <string name="sign_up">注册</string>
+    <string name="sign_in_english">SIGN IN</string>
+    <string name="sign_up_english">SIGN UP</string>
+    <string name="phone_number">手机号</string>
+    <string name="verification_code">验证码</string>
+    <string name="get_verification_code">获取验证码</string>
+    <string name="password">密码</string>
+    <string name="confirm">确认</string>
+    <string name="forget_password">忘记密码？</string>
+    <string name="copyright">Copyright © 2018 SSKJ</string>
 
-    <string name="water_quality_over_all">水质概览</string>
 </resources>
