@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import cn.tabll.sskj.LoginActivity
 import cn.tabll.sskj.R
+import cn.tabll.sskj.TalkActivity
 import org.jetbrains.anko.*
 import org.jetbrains.anko.cardview.v7.cardView
 import org.jetbrains.anko.design.appBarLayout
@@ -153,6 +154,10 @@ class MineFragment : Fragment() {
                     }
                 }.lparams(width = matchParent)
                 cardView {
+
+                    onClick {
+                        startActivity<TalkActivity>()
+                    }
                     linearLayout {
                         orientation = LinearLayout.HORIZONTAL
                         imageView {
