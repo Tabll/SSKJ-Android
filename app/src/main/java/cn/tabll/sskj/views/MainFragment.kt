@@ -26,11 +26,11 @@ import org.jetbrains.anko.support.v4.swipeRefreshLayout
 
 class MainFragment : Fragment() {
 
-    fun stopWave(){
-        //this.water_wave_view.stopWave()
+    fun stopWave() {
+        this.water_wave_view.stopWave()
     }
 
-    fun startWave(){
+    fun startWave() {
         this.water_wave_view.startWave()
     }
 

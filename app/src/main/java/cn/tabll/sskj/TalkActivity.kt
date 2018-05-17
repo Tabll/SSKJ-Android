@@ -21,7 +21,7 @@ import kotlin.collections.ArrayList
 class TalkActivity : AppCompatActivity() {
 
     private var XBMessages: ListView? = null
-    private var chatMessageAdaper: ChatMessageAdapter? = null
+    private var chatMessageAdapter: ChatMessageAdapter? = null
     private var messages: MutableList<ChatMessages>? = null
 
     private var input_text: EditText? = null
@@ -35,7 +35,7 @@ class TalkActivity : AppCompatActivity() {
 
             val fromMessage = msg.obj as ChatMessages
             messages!!.add(fromMessage)
-            chatMessageAdaper!!.notifyDataSetChanged()//表示数据源发送变化
+            chatMessageAdapter!!.notifyDataSetChanged()//表示数据源发送变化
             //super.handleMessage(msg);
         }
     }
@@ -63,7 +63,7 @@ class TalkActivity : AppCompatActivity() {
             tocMessage.msg = toMessage
             tocMessage.type = ChatMessages.Type.OUTGOING
             messages!!.add(tocMessage)
-            chatMessageAdaper!!.notifyDataSetChanged()//通知更新
+            chatMessageAdapter!!.notifyDataSetChanged()//通知更新
             input_text!!.setText("")//清空输入框
 
             object : Thread() {
@@ -81,9 +81,9 @@ class TalkActivity : AppCompatActivity() {
         messages = ArrayList()
         //messages.add(new ChatMessage("你好", ChatMessage.Type.INCOMING, new Date()));
         //messages.add(new ChatMessage("你好", ChatMessage.Type.OUTCOMING, new Date()));
-        chatMessageAdaper = ChatMessageAdapter(this, messages!!)
+        chatMessageAdapter = ChatMessageAdapter(this, messages!!)
 
-        XBMessages!!.adapter = chatMessageAdaper
+        XBMessages!!.adapter = chatMessageAdapter
     }
 
     private fun initView() {

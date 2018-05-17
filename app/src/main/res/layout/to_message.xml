@@ -16,7 +16,7 @@
         android:layout_gravity="center"/>
 
     <LinearLayout
-        android:gravity="right"
+        android:gravity="end"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">

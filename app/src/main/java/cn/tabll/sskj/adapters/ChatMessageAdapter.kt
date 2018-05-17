@@ -31,10 +31,10 @@ class ChatMessageAdapter(context: Context, messages: MutableList<ChatMessages>) 
 
     override fun getView(i: Int, view: View?, viewGroup: ViewGroup): View? {
         //var view = view
-        var myView: View? = null
+        var myView: View? = view
         val chatMessage = chatMessages[i]
         val viewHolder: ViewHolder
-        if (view == null) {
+        if (myView == null) {
             //通过ItemType设置不同的布局
             if (getItemViewType(i) == 0) {//假如为0，则是小笨的消息
                 myView = layoutInflater.inflate(R.layout.from_message, viewGroup, false)
@@ -49,7 +49,7 @@ class ChatMessageAdapter(context: Context, messages: MutableList<ChatMessages>) 
             }
             myView.tag = viewHolder//存储一下ViewHolder
         } else {
-            viewHolder = view.tag as ViewHolder
+            viewHolder = myView.tag as ViewHolder
         }
         //设置数据
         val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA)//设置时间格式
