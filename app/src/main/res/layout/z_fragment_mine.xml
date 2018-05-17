@@ -20,7 +20,6 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -40,14 +39,145 @@
                 android:layout_marginBottom="20dp"
                 android:text="上善已与您相伴100天"/>
         </LinearLayout>
-
-
     </android.support.v7.widget.CardView>
 
-    <android.support.v7.widget.RecyclerView
+    <!--产品使用说明-->
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="90dp"
+            android:layout_marginEnd="90dp"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:padding="18dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_navigation_mine_how_to_use_products"
+                android:scaleType="fitStart"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:text="@string/how_to_use_products"/>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <!--设备绑定-->
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="90dp"
+            android:layout_marginEnd="90dp"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:padding="18dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_navigation_mine_connect_my_products"
+                android:scaleType="fitStart"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:text="@string/connect_my_products"/>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <!--历史订单-->
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="90dp"
+            android:layout_marginEnd="90dp"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:padding="18dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_navigation_mine_order_history"
+                android:scaleType="fitStart"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:text="@string/order_history"/>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <!--定制化业务-->
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="90dp"
+            android:layout_marginEnd="90dp"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:padding="18dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_navigation_mine_custom_made_business"
+                android:scaleType="fitStart"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:text="@string/custom_made_business"/>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <!--联系客服-->
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="90dp"
+            android:layout_marginEnd="90dp"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:padding="18dp"
+                android:layout_gravity="center"
+                android:contentDescription="@string/shop"
+                android:src="@drawable/ic_navigation_mine_contact_service"
+                android:scaleType="fitStart"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:text="@string/contact_service"/>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <!--android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </android.support.v7.widget.RecyclerView>
+    </android.support.v7.widget.RecyclerView-->
 
 
 

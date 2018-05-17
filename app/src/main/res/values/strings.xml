@@ -20,6 +20,13 @@
 
     <string name="water_quality_over_all">水质概览</string>
 
+    <!--我的页使用-->
+    <string name="how_to_use_products">产品使用说明</string>
+    <string name="connect_my_products">设备绑定</string>
+    <string name="order_history">历史订单</string>
+    <string name="custom_made_business">定制化业务</string>
+    <string name="contact_service">联系客服</string>
+
     <!--注册页使用-->
     <string name="sign_in">登陆</string>
     <string name="sign_up">注册</string>

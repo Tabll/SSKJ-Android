@@ -10,9 +10,7 @@ import android.view.ViewAnimationUtils
 import android.widget.Button
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_login.view.*
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
-import org.jetbrains.anko.toast
+import org.jetbrains.anko.*
 
 class LoginActivity : AppCompatActivity() {
 
@@ -49,8 +47,26 @@ class LoginActivity : AppCompatActivity() {
         get_verification_button.setOnClickListener {
             phone_number_signUp_textView.isEnabled = false
             get_verification_button.isEnabled = false
-            phone_number_signUp_textView.text
-            toast(phone_number_signUp_textView.text)
+            //phone_number_signUp_textView.text
+            //toast(phone_number_signUp_textView.text)
+            doAsync {
+                var secondLeft = 10
+                while (secondLeft != 0) {
+                    secondLeft--
+                    uiThread {
+                        get_verification_button.text = secondLeft.toString()
+                    }
+                    when (secondLeft) {
+                        0 -> {
+                            uiThread {
+                                get_verification_button.isEnabled = true
+                                get_verification_button.text = "获取验证码"
+                            }
+                        }
+                        else -> Thread.sleep(1000)
+                    }
+                }
+            }
         }
 
         confirm_button.setOnClickListener {
