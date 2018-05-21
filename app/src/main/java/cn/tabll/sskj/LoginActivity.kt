@@ -8,6 +8,8 @@ import android.support.v7.widget.CardView
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.widget.Button
+import cn.tabll.sskj.https.HttpConnectors
+import cn.tabll.sskj.objects.PostMaps
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_login.view.*
 import org.jetbrains.anko.*
@@ -70,7 +72,19 @@ class LoginActivity : AppCompatActivity() {
         }
 
         confirm_button.setOnClickListener {
-            toast("已请求")
+
+            val httpConnectors = HttpConnectors()
+            val codes = mapOf("my-test-key" to "HA22GU46aGIU784QF1DV")
+
+            var result:String?
+            doAsync {
+                result = httpConnectors.httpPost("https://www.tabll.cn", codes, "")
+                uiThread {
+                    toast(result!!)
+                }
+            }
+
+            //toast(result)
         }
 
         confirm_signUp_button.setOnClickListener {
