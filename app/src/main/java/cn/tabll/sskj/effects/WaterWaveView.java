@@ -11,7 +11,6 @@ import android.os.Looper;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.view.View;
 
 import cn.tabll.sskj.R;
@@ -130,7 +129,7 @@ public class WaterWaveView extends View {
                     invalidate();
                     if (mStarted) { //不断发消息给自己，使自己不断被重绘
                         //暂时停止绘制
-                        //mHandler.sendEmptyMessageDelayed(0, 60L);
+                        mHandler.sendEmptyMessageDelayed(0, 60L);
                     }
                 }
             }
