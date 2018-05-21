@@ -1,5 +1,8 @@
 package cn.tabll.sskj.https
 
+import android.os.Handler
+import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.info
 import java.io.*
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
@@ -8,8 +11,16 @@ import java.net.URLEncoder
 
 class HttpConnectors {
 
+    var log = AnkoLogger<String>()
+
+    //private var handler: Handler? = null
+    //private var my_result: String? = null
+
     fun httpGet(strUrlPath: String, params: Map<String, String>, encode: String): String {
+        log.info("发送网络请求GET")
         var myStrUrlPath = strUrlPath
+        /* byte[] data = getRequestData(params, encode).toString().getBytes();//获得请求体*/
+        /* String target="http://emb.mobi/register";*/
         var result: String? = null
         val appendUrl = getRequestData(params, encode).toString()
         myStrUrlPath = "$myStrUrlPath?$appendUrl"
@@ -51,11 +62,14 @@ class HttpConnectors {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+
         return stringBuffer
     }
 
+
     fun httpPost(strUrlPath: String, params: Map<String, String>, encode: String): String {
         val data = getRequestData(params, encode).toString().toByteArray()
+        log.info("发送网络请求POST")
         try {
             val url = URL(strUrlPath)
             val http = url.openConnection() as HttpURLConnection

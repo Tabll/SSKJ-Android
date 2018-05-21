@@ -7,11 +7,8 @@ import android.support.design.widget.TabLayout
 import android.support.v7.widget.CardView
 import android.view.View
 import android.view.ViewAnimationUtils
-import android.widget.Button
 import cn.tabll.sskj.https.HttpConnectors
-import cn.tabll.sskj.objects.PostMaps
 import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.activity_login.view.*
 import org.jetbrains.anko.*
 
 class LoginActivity : AppCompatActivity() {
@@ -78,7 +75,7 @@ class LoginActivity : AppCompatActivity() {
 
             var result:String?
             doAsync {
-                result = httpConnectors.httpPost("https://www.tabll.cn", codes, "")
+                result = httpConnectors.httpPost("https://www.tabll.cn/sskjapi/test.php", codes, "utf-8")
                 uiThread {
                     toast(result!!)
                 }
