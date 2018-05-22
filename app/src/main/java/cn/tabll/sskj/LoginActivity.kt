@@ -49,6 +49,7 @@ class LoginActivity : AppCompatActivity() {
             //phone_number_signUp_textView.text
             //toast(phone_number_signUp_textView.text)
             doAsync {
+                sendVerificationMessage() //发送验证码
                 var secondLeft = 10
                 while (secondLeft != 0) {
                     secondLeft--
@@ -90,7 +91,40 @@ class LoginActivity : AppCompatActivity() {
     }
 
     /**
-     * 注册与登陆的切换动画
+     * 发送短信验证码
+     **/
+    private fun sendVerificationMessage(){
+        doAsync {
+            val httpConnector = HttpConnectors()
+            val codes = mapOf(
+                    "sign-up-state" to "1",
+                    "user-phone-number" to phone_number_signUp_textView.text.toString(),
+                    "user-verify-code" to "",
+                    "user-password" to "")
+            val result = httpConnector.httpPost("https://www.tabll.cn/sskjapi/signup.php", codes, "utf-8")
+            when (result){
+                "success" -> {
+                    uiThread {
+                        toast("短信发送成功")
+                    }
+                }
+                else -> {
+                    uiThread {
+                        toast(result)
+                    }
+                }
+
+            }
+
+
+            uiThread {
+                //toast(result!!)
+            }
+        }
+    }
+
+    /**
+     * 注册与登陆CardView的切换动画
      **/
     private fun animateCircularReveal(view: View){
         val cx = (view.right - view.left) / 2
