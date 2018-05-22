@@ -24,6 +24,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun init(){
+
+        //Tab点击事件
         login_tabLayout.addOnTabSelectedListener(object :TabLayout.OnTabSelectedListener{
             override fun onTabReselected(tab: TabLayout.Tab?) { }
             override fun onTabUnselected(tab: TabLayout.Tab?) { }
@@ -43,14 +45,13 @@ class LoginActivity : AppCompatActivity() {
             }
         })
 
+        //短信验证码点击事件
         get_verification_button.setOnClickListener {
             phone_number_signUp_textView.isEnabled = false
             get_verification_button.isEnabled = false
-            //phone_number_signUp_textView.text
-            //toast(phone_number_signUp_textView.text)
             doAsync {
                 sendVerificationMessage() //发送验证码
-                var secondLeft = 10
+                var secondLeft = 60 //短信发送等待时间
                 while (secondLeft != 0) {
                     secondLeft--
                     uiThread {
@@ -69,11 +70,10 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
+        //登陆按钮点击事件
         confirm_button.setOnClickListener {
-
             val httpConnectors = HttpConnectors()
             val codes = mapOf("my-test-key" to "HA22GU46aGIU784QF1DV")
-
             var result:String?
             doAsync {
                 result = httpConnectors.httpPost("https://www.tabll.cn/sskjapi/test.php", codes, "utf-8")
@@ -81,12 +81,44 @@ class LoginActivity : AppCompatActivity() {
                     toast(result!!)
                 }
             }
-
             //toast(result)
         }
 
+        //注册按钮点击事件
         confirm_signUp_button.setOnClickListener {
-            toast("已请求")
+            sendSignUpMessage()
+        }
+    }
+
+    private fun sendSignUpMessage(){
+        log.info("已请求注册/用户密码重置")
+        doAsync {
+            val httpConnector = HttpConnectors()
+            val codes = mapOf(
+                    "sign-up-state" to "3",
+                    "user-phone-number" to phone_number_signUp_textView.text.toString(),
+                    "user-verify-code" to verification_signUp_editText.text.toString(),
+                    "user-password" to password_signUp_editText.text.toString())
+            val result = httpConnector.httpPost("https://www.tabll.cn/sskjapi/signup.php", codes, "utf-8")
+            when (result){
+                "success" -> {
+                    uiThread {
+                        log.info("注册成功")
+                        toast("注册成功")
+                        login_tabLayout.isClickable = false
+                        login_tabLayout.removeAllTabs()
+                        sign_up_cardView.visibility = CardView.GONE
+                        sign_in_cardView.visibility = CardView.VISIBLE
+                        animateCircularReveal(sign_in_cardView)
+                    }
+                }
+                else -> {
+                    uiThread {
+                        log.warn("注册失败：$result")
+                        toast(result)
+                    }
+                }
+            }
         }
     }
 
@@ -94,6 +126,7 @@ class LoginActivity : AppCompatActivity() {
      * 发送短信验证码
      **/
     private fun sendVerificationMessage(){
+        log.info("已请求短信验证码")
         doAsync {
             val httpConnector = HttpConnectors()
             val codes = mapOf(
@@ -113,12 +146,6 @@ class LoginActivity : AppCompatActivity() {
                         toast(result)
                     }
                 }
-
-            }
-
-
-            uiThread {
-                //toast(result!!)
             }
         }
     }
