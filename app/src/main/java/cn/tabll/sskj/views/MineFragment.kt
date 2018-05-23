@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import cn.tabll.sskj.LoginActivity
+import cn.tabll.sskj.PersonalInfoActivity
 import cn.tabll.sskj.R
 import cn.tabll.sskj.TalkActivity
 import cn.tabll.sskj.data.SharedPreferencesMaker
@@ -27,10 +28,34 @@ class MineFragment : Fragment() {
 
     private val log = AnkoLogger<String>()
 
-    fun changeSignInInfo(){
+    //override fun onCreate(savedInstanceState: Bundle?) {
+    //    super.onCreate(savedInstanceState)
+    //}
+
+    private fun isUserSignIn(): Boolean{
+        return when (SharedPreferencesMaker().readSharedPreferencesFromKey(ctx,"State")){
+            "1" -> true
+            else -> false
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        doAsync {
+            if (isUserSignIn()){
+                log.info("登陆状态检查：已登陆")
+                uiThread {
+                    changeSignInInfo()
+                }
+            }else{
+                log.info("登陆状态检查：未登陆")
+            }
+        }
+    }
+
+    private fun changeSignInInfo(){
+        find<TextView>(R.id.mineFragment_infoTextView).text = SharedPreferencesMaker().readSharedPreferencesFromKey(ctx,"UserName")
         log.verbose("登陆信息已更新")
-        val sharedPreferences = SharedPreferencesMaker()
-        find<TextView>(R.id.mineFragment_infoTextView).text = sharedPreferences.readSharedPreferencesFromKey(ctx,"UserName")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -63,7 +88,11 @@ class MineFragment : Fragment() {
                             imageResource = R.drawable.ic_company_logo
                             scaleType = ImageView.ScaleType.FIT_START
                             onClick {
-                                startActivity<LoginActivity>()
+                                if (isUserSignIn()){
+                                    startActivity<PersonalInfoActivity>()
+                                }else{
+                                    startActivity<LoginActivity>()
+                                }
                             }
                         }.lparams(width = dip(120), height = dip(120)) {
                             gravity = Gravity.CENTER

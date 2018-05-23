@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         nav_view.setNavigationItemSelectedListener(this)
 
         init() //初始化
+        checkSignState() //检查登陆状态
         log.info("主页面已启动")
     }
 
@@ -115,17 +116,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onRestart() {
         super.onRestart()
+        checkSignState() //检查登陆状态
+    }
+
+    /**
+     * 检查登陆状态
+     **/
+    private fun checkSignState(){
         val sharedPreferences = SharedPreferencesMaker()
         when (sharedPreferences.readSharedPreferencesFromKey(this,"State")){
             "1" -> {
-                log.info("已登陆")
-                mineFragment.changeSignInInfo()
+                log.info("登陆状态：已登陆")
+                //mineFragment.changeSignInInfo()
             }
             "0" -> {
-                log.info("未登陆")
+                log.info("登陆状态：未登陆")
             }
         }
-
     }
     //override fun onStart() {
     //    super.onStart()
