@@ -10,16 +10,29 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import cn.tabll.sskj.LoginActivity
 import cn.tabll.sskj.R
 import cn.tabll.sskj.TalkActivity
+import cn.tabll.sskj.data.SharedPreferencesMaker
 import org.jetbrains.anko.*
 import org.jetbrains.anko.cardview.v7.cardView
 import org.jetbrains.anko.design.appBarLayout
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.support.v4.UI
+import org.jetbrains.anko.support.v4.ctx
+import org.jetbrains.anko.support.v4.find
 
 class MineFragment : Fragment() {
+
+    private val log = AnkoLogger<String>()
+
+    fun changeSignInInfo(){
+        log.verbose("登陆信息已更新")
+        val sharedPreferences = SharedPreferencesMaker()
+        find<TextView>(R.id.mineFragment_infoTextView).text = sharedPreferences.readSharedPreferencesFromKey(ctx,"UserName")
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return UI {
             linearLayout {
@@ -56,6 +69,7 @@ class MineFragment : Fragment() {
                             gravity = Gravity.CENTER
                         }
                         textView {
+                            id = R.id.mineFragment_infoTextView
                             text = "上善已与您相伴100天"
                         }.lparams {
                             gravity = Gravity.CENTER_HORIZONTAL

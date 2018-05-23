@@ -14,12 +14,10 @@ import java.net.URLEncoder
 import java.util.*
 
 class Utils {
-    private val URL = "http://www.tuling123.com/openapi/api"
-    private val XB_APIkey = "49f2b50b474174b487a9d88f3cea5ff2"
-
+    private val myURL = "http://www.tuling123.com/openapi/api"
+    private val myAPIkey = "49f2b50b474174b487a9d88f3cea5ff2"
     fun sendMessage(msg: String): ChatMessages {
         val chatMessage = ChatMessages()
-
         val jsonRes = doGet(msg)
         val gson = Gson()
         val result: ChatMessagesResults?
@@ -29,10 +27,8 @@ class Utils {
         } catch (e: JsonSyntaxException) {
             chatMessage.msg = "小笨正忙"
         }
-
         chatMessage.date = Date() //设置时间
         chatMessage.type = ChatMessages.Type.INCOMING //设置类型
-
         return chatMessage
     }
 
@@ -40,39 +36,36 @@ class Utils {
         var result = ""
         val url = setParams(msg)//设置参数，返回一个Url
         var thisInputStream: InputStream? = null
-        var baos: ByteArrayOutputStream? = null
+        var byteArrayOutputStream: ByteArrayOutputStream? = null
         try {
             val urlNet = java.net.URL(url)
             val xb = urlNet.openConnection() as HttpURLConnection
             xb.readTimeout = 5000
             xb.connectTimeout = 5000
             xb.requestMethod = "GET"
-
             thisInputStream = xb.inputStream
-
-            var len: Int = -1
-            val buf = ByteArray(128)//缓冲区128个字节
-            baos = ByteArrayOutputStream()
+            var len: Int
+            val buf = ByteArray(128) //缓冲区128个字节
+            byteArrayOutputStream = ByteArrayOutputStream()
             len = thisInputStream.read(buf)
             while (len != -1) {
-                baos.write(buf, 0, len)
+                byteArrayOutputStream.write(buf, 0, len)
                 len = thisInputStream.read(buf)
             }
-            baos.flush()//清除缓冲区
-            result = String(baos.toByteArray())
+            byteArrayOutputStream.flush() //清除缓冲区
+            result = String(byteArrayOutputStream.toByteArray())
         } catch (e: MalformedURLException) {
             e.printStackTrace()
         } catch (e: IOException) {
             e.printStackTrace()
         } finally {
             try {
-                if (baos != null) {
-                    baos.close()
+                if (byteArrayOutputStream != null) {
+                    byteArrayOutputStream.close()
                 }
             } catch (e: IOException) {
                 e.printStackTrace()
             }
-
             try {
                 if (thisInputStream != null) {
                     thisInputStream.close()
@@ -80,20 +73,17 @@ class Utils {
             } catch (e: IOException) {
                 e.printStackTrace()
             }
-
         }
-
         return result
     }
 
     private fun setParams(msg: String): String {
         var url = ""
         try {
-            url = URL + "?key=" + XB_APIkey + "&info=" + URLEncoder.encode(msg, "UTF-8")
+            url = myURL + "?key=" + myAPIkey + "&info=" + URLEncoder.encode(msg, "UTF-8")
         } catch (e: UnsupportedEncodingException) {
             e.printStackTrace()
         }
-
         return url
     }
 }

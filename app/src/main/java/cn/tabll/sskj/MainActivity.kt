@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import cn.tabll.sskj.adapters.ViewPagerAdapter
+import cn.tabll.sskj.data.SharedPreferencesMaker
 import cn.tabll.sskj.tools.BottomNavigationViewHelper
 import cn.tabll.sskj.views.MainFragment
 import cn.tabll.sskj.views.MineFragment
@@ -22,6 +23,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private var log = AnkoLogger<String>()
     private val mainFragment = MainFragment()
+    private val mineFragment = MineFragment()
     private var isWaterWaveStarted: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -107,10 +109,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         viewPagerAdapter.addFragment(mainFragment)
         viewPagerAdapter.addFragment(WaterQualityFragment())
         viewPagerAdapter.addFragment(ShopFragment())
-        viewPagerAdapter.addFragment(MineFragment())
+        viewPagerAdapter.addFragment(mineFragment)
         view_pager.adapter = viewPagerAdapter //ViewPager适配器
     }
 
+    override fun onRestart() {
+        super.onRestart()
+        val sharedPreferences = SharedPreferencesMaker()
+        when (sharedPreferences.readSharedPreferencesFromKey(this,"State")){
+            "1" -> {
+                log.info("已登陆")
+                mineFragment.changeSignInInfo()
+            }
+            "0" -> {
+                log.info("未登陆")
+            }
+        }
+
+    }
     //override fun onStart() {
     //    super.onStart()
     //    //mainFragment.startWave()

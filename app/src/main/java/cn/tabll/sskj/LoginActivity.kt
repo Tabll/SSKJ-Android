@@ -7,7 +7,11 @@ import android.support.design.widget.TabLayout
 import android.support.v7.widget.CardView
 import android.view.View
 import android.view.ViewAnimationUtils
+import cn.tabll.sskj.data.SharedPreferencesMaker
 import cn.tabll.sskj.https.HttpConnectors
+import cn.tabll.sskj.objects.SignInMessagesResults
+import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
 import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.*
 
@@ -19,10 +23,13 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        init()
+        init() //初始化
         log.info("登陆注册页已启动")
     }
 
+    /**
+     * 初始化
+     **/
     private fun init(){
 
         //Tab点击事件
@@ -72,16 +79,7 @@ class LoginActivity : AppCompatActivity() {
 
         //登陆按钮点击事件
         confirm_button.setOnClickListener {
-            val httpConnectors = HttpConnectors()
-            val codes = mapOf("my-test-key" to "HA22GU46aGIU784QF1DV")
-            var result:String?
-            doAsync {
-                result = httpConnectors.httpPost("https://www.tabll.cn/sskjapi/test.php", codes, "utf-8")
-                uiThread {
-                    toast(result!!)
-                }
-            }
-            //toast(result)
+            confirmPassword()
         }
 
         //注册按钮点击事件
@@ -90,6 +88,62 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    private fun doIt(){
+        this.finish()
+    }
+
+    /**
+     * 确认密码是否正确
+     **/
+    private fun confirmPassword(){
+        val sharedPreferences = SharedPreferencesMaker()
+        //sharedPreferences.readSharedPreferencesFromKey(this,"")
+        doAsync {
+            val httpConnector = HttpConnectors()
+            val phoneNumber = phone_number_textView.text.toString()
+            val codes = mapOf(
+                    "sign-in-state" to "1",
+                    "user-phone-number" to phoneNumber,
+                    "token" to "",
+                    "user-password" to password_editText.text.toString())
+            val jsonCodes = httpConnector.httpPost("https://www.tabll.cn/sskjapi/signin.php", codes, "utf-8")
+            val gson = Gson()
+            val result: SignInMessagesResults?
+            try {
+                result = gson.fromJson(jsonCodes, SignInMessagesResults::class.java)
+                when (result.State){
+                    "SUCCESS" -> {
+                        sharedPreferences.saveSharedPreferences(this@LoginActivity, mapOf("UserName" to phoneNumber, "State" to "1"))
+                        if (result.NeedUpdate == "TRUE"){
+                            sharedPreferences.saveSharedPreferences(this@LoginActivity, mapOf("Token" to result.Token))
+                            log.info("Token已保存")
+                            log.verbose(result.Token) //正式版需要隐藏
+                        }
+                        log.info("密码已认证")
+                        uiThread {
+                            toast("登陆成功")
+                            doIt()
+                        }
+                    }
+                    else -> {
+                        log.warn("登陆失败：" + result.WARNING)
+                        uiThread {
+                            toast("登陆失败")
+                        }
+                    }
+                }
+            } catch (e: JsonSyntaxException) {
+                log.error("Json解析失败：" + e.message)
+                uiThread {
+                    toast("登陆异常")
+                }
+            }
+        }
+    }
+
+    /**
+     * 发送注册/密码更改信息
+     **/
     private fun sendSignUpMessage(){
         log.info("已请求注册/用户密码重置")
         doAsync {
