@@ -7,7 +7,7 @@ import org.jetbrains.anko.info
 
 class PersonalInfoActivity : AppCompatActivity() {
 
-    val log = AnkoLogger<String>()
+    private val log = AnkoLogger<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
