@@ -36,7 +36,7 @@
             android:name=".LoginActivity"
             android:theme="@style/AppTheme.StartActivity" />
         <activity android:name=".TalkActivity" />
-        <activity android:name=".PersonalInfoActivity"></activity>
+        <activity android:name=".PersonalInfoActivity"/>
     </application>
 
 </manifest>

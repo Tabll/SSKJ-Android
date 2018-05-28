@@ -1,14 +1,22 @@
 package cn.tabll.sskj.adapters
 
+import android.app.ProgressDialog.show
+import android.support.design.R.attr.hintEnabled
+import android.support.design.R.attr.theme
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.RecyclerView.Adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.LinearLayout
 import cn.tabll.sskj.R
 import cn.tabll.sskj.objects.ProductionInformation
 import cn.tabll.sskj.tools.AdapterItemTouchHelper
 import kotlinx.android.synthetic.main.adapter_items_main_fragment.view.*
+import org.jetbrains.anko.*
+import org.jetbrains.anko.design.textInputLayout
+import org.jetbrains.anko.sdk25.coroutines.onClick
 import java.util.*
 
 class MainFragmentProductionAdapter(private var productions: ArrayList<ProductionInformation>): Adapter<MainFragmentProductionAdapter.MyHolder>(), AdapterItemTouchHelper {
@@ -31,20 +39,20 @@ class MainFragmentProductionAdapter(private var productions: ArrayList<Productio
         notifyItemMoved(fromPosition, toPosition)
     }
 
-    override fun onItemDismiss(position: Int) {
-        //    if (openedItem == position){
-        //        openedCard!!.context.startActivity<StockMoreInfoActivity>("position" to SelfChoiceList.getStockCodeByID(position))
-        //    }
-//
-        //    if (productions.size > 5 && openedItem != -1){
-        //        openedCard?.simpleCardView?.removeView(additionalView)
-        //        openedCard?.simpleCardView?.layoutParams?.height = Value().px80
-        //        openedCard = null
-        //        openedItem = -1
-        //    }
-        //    //notifyItemChanged(position)
-        notifyDataSetChanged()
-    }
+    //override fun onItemDismiss(position: Int) {
+    //    //    if (openedItem == position){
+    //    //        openedCard!!.context.startActivity<StockMoreInfoActivity>("position" to SelfChoiceList.getStockCodeByID(position))
+    //    //    }
+////
+    //    //    if (productions.size > 5 && openedItem != -1){
+    //    //        openedCard?.simpleCardView?.removeView(additionalView)
+    //    //        openedCard?.simpleCardView?.layoutParams?.height = Value().px80
+    //    //        openedCard = null
+    //    //        openedItem = -1
+    //    //    }
+    //    //    //notifyItemChanged(position)
+    //    notifyDataSetChanged()
+    //}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.adapter_items_main_fragment, parent, false)
@@ -58,13 +66,11 @@ class MainFragmentProductionAdapter(private var productions: ArrayList<Productio
     override fun getItemCount(): Int = productions.size
 
     private fun updateView(view: View, position: Int){
-        //find<String>(R.string.production_name_is)
-        //find
-
         view.production_name_textView.text = String.format(view.resources.getString(R.string.production_name_is), productions[position].name)
         view.production_type_textView.text = String.format(view.resources.getString(R.string.production_type_is), productions[position].type)
         view.production_state_textView.text = String.format(view.resources.getString(R.string.production_state_is), productions[position].state)
 
+        view.production_info_imageView.setOnClickListener{ infoImageClickListener(view, position) }
         //view.simpleCardView.setOnClickListener { itemClickListener(view, position) }
         //view.stockNameTextView.text = items!![position].stockName
         //view.stockPriceTextView.text = items!![position].nowPrice
@@ -81,60 +87,69 @@ class MainFragmentProductionAdapter(private var productions: ArrayList<Productio
         //}
     }
 
-    //private fun itemClickListener(view: View, position: Int) {
-    //    updateAdditionalView(position)
-    //    //view.context.toast("是" + position)
-    //    when (openedItem != position) {
-    //        true -> {
-    //            view.simpleCardView.layoutParams.height = Value().px800
-    //            if (openedItem != -1) {
-    //                openedCard?.removeView(additionalView)
-    //                openedCard?.layoutParams?.height = Value().px80
-    //                notifyItemChanged(openedItem, 100)
-    //            }
-    //            view.simpleCardView.addView(additionalView)
-    //            openedCard = view.simpleCardView
-    //            openedItem = position
-    //        }
-    //        false -> {
-    //            if (view.simpleCardView.layoutParams.height == Value().px80) {
-    //                view.simpleCardView.addView(additionalView)
-    //                view.simpleCardView.layoutParams.height = Value().px800
-    //                openedCard = view.simpleCardView
-    //                openedItem = position
-    //            } else {
-    //                view.simpleCardView.removeView(additionalView)
-    //                view.simpleCardView.layoutParams.height = Value().px80
-    //                openedCard = null
-    //                openedItem = -1
-    //            }
-    //        }
-    //    }
-    //    notifyItemChanged(position, 100)
-    //}
+    private fun infoImageClickListener(view: View, position: Int){
+        var editTextView: EditText? = null
+        view.context.alert {
+            customView {
+                linearLayout{
+                    orientation = LinearLayout.VERTICAL
+                    textInputLayout {
+                        editTextView = editText (productions[position].name) {
+                            hint = "自定义设备名称"
+                            singleLine = true
+                        }
+                    }
+                    textView {
+                        padding = dip(5)
+                        hint = "未知设备型号"
+                        if (!productions[position].type.isEmpty()){
+                            text = String.format(view.resources.getString(R.string.production_type_is), productions[position].type)
+                        }
+                    }
+                    textView {
+                        padding = dip(5)
+                        hint = "设备状态异常"
+                        if (!productions[position].state.isEmpty()) {
+                            text = String.format(view.resources.getString(R.string.production_state_is), productions[position].state)
+                        }
+                    }
+                    textView {
+                        padding = dip(5)
+                        hint = "无使用寿命信息"
+                        if (!productions[position].wastage.isEmpty()) {
+                            text = String.format(view.resources.getString(R.string.production_wastage_is), productions[position].wastage)
+                        }
+                    }
+                    textView {
+                        padding = dip(5)
+                        hint = "无设备制造商信息"
+                        if (!productions[position].manufacturer.isEmpty()) {
+                            text = String.format(view.resources.getString(R.string.production_manufacturer_is), productions[position].manufacturer)
+                        }
+                    }
+                    textView {
+                        padding = dip(5)
+                        hint = "设备ID信息出错"
+                        if (!productions[position].id.isEmpty()) {
+                            text = String.format(view.resources.getString(R.string.production_id_is), productions[position].id)
+                        }
+                    }
+                    padding = dip(20)
+                }
+            }
+            title = "设备信息"
+            positiveButton("确定", {
+                productions[position].name = editTextView!!.text.toString()
+                notifyItemChanged(position)
+                view.context.toast("已更改")
+            })
+        }.show()
 
-    //private fun itemLongClickListener(position: Int, view: View): Boolean {
-    //    view.context.startActivity<StockMoreInfoActivity>("position" to position)
-    //    return true
-    //}
-
-    //fun updateItems(newItems: ArrayList<Stock>){
-    //    //items = newItems
-    //    productions?.clear()
-    //    productions?.addAll(newItems)
-//
-    //    if (productions!!.size > 5 && openedItem != -1){
-    //        openedCard?.simpleCardView?.removeView(additionalView)
-    //        openedCard?.simpleCardView?.layoutParams?.height = Value().px80
-    //        openedCard = null
-    //        openedItem = -1
-    //    }
-//
-    //    notifyDataSetChanged()
-    //}
-
-    //fun addItems(newStock: Stock){
-    //    productions!!.add(newStock)
-    //    notifyItemInserted(productions!!.size)
-    //}
+        //view.context.alert("数据来源\n新浪网") {
+        //    title = "关于"
+        //    okButton {
+        //        view.context.toast("好的")
+        //    }
+        //}.show()
+    }
 }

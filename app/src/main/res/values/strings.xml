@@ -24,6 +24,9 @@
     <string name="production_name_is">设备名：%1$s</string>
     <string name="production_type_is">型号：%1$s</string>
     <string name="production_state_is">状态：%1$s</string>
+    <string name="production_wastage_is">剩余使用寿命：%1$s</string>
+    <string name="production_manufacturer_is">制造商：%1$s</string>
+    <string name="production_id_is">ID：%1$s</string>
 
     <!--我的页使用-->
     <string name="how_to_use_products">产品使用说明</string>

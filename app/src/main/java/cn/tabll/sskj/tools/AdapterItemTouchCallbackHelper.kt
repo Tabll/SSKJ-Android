@@ -17,6 +17,10 @@ class AdapterItemTouchCallbackHelper (private val adapter: AdapterItemTouchHelpe
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder?, direction: Int) {
-        adapter.onItemDismiss(viewHolder!!.adapterPosition)
+        //adapter.onItemDismiss(viewHolder!!.adapterPosition)
+    }
+
+    override fun isItemViewSwipeEnabled(): Boolean {
+        return false
     }
 }

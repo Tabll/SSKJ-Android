@@ -14,8 +14,12 @@ import android.view.*
 import cn.tabll.sskj.listener.AppBarStateChangeListener
 import cn.tabll.sskj.R
 import cn.tabll.sskj.adapters.MainFragmentProductionAdapter
+import cn.tabll.sskj.data.SharedPreferencesMaker
+import cn.tabll.sskj.https.HttpConnectors
 import cn.tabll.sskj.objects.ProductionInformation
 import cn.tabll.sskj.tools.AdapterItemTouchCallbackHelper
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.view_water_wave.*
 import kotlinx.android.synthetic.main.view_water_wave.view.*
 import org.jetbrains.anko.*
@@ -31,6 +35,8 @@ import org.jetbrains.anko.support.v4.swipeRefreshLayout
 import java.util.ArrayList
 
 class MainFragment : Fragment() {
+
+    val log = AnkoLogger<String>()
 
     fun stopWave() {
         this.water_wave_view.stopWave()
@@ -60,6 +66,15 @@ class MainFragment : Fragment() {
     //    super.onStop()
     //}
 
+    private fun getProductionsInformation(): ArrayList<ProductionInformation>{
+        val httpConnector = HttpConnectors()
+        val codes = mapOf(
+                "user-phone-number" to SharedPreferencesMaker().readSharedPreferencesFromKey(ctx, "UserName"),
+                "token" to SharedPreferencesMaker().readSharedPreferencesFromKey(ctx, "Token"))
+        val jsonCodes = httpConnector.httpPost("https://www.tabll.cn/sskjapi/productions.php", codes, "utf-8")
+        val turnsType = object : TypeToken<List<ProductionInformation>>() {}.type
+        return Gson().fromJson<ArrayList<ProductionInformation>>(jsonCodes, turnsType) //解析
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -118,6 +133,7 @@ class MainFragment : Fragment() {
                     }.lparams(width = matchParent)
                     mySwipeRefreshLayout = swipeRefreshLayout {
                         id = R.id.mainFragment_refreshLayout
+                        setColorSchemeColors(resources.getColor(R.color.colorPrimary))
                         onRefresh {
                             this.isRefreshing = false
                         }
@@ -175,9 +191,16 @@ class MainFragment : Fragment() {
                             production.type = "GC-06"
                             production.state = "正常"
                             list.add(production)
-                            val adapter = MainFragmentProductionAdapter(list)
-                            setAdapter(adapter)
-                            ItemTouchHelper(AdapterItemTouchCallbackHelper(adapter)).attachToRecyclerView(this)
+                            //val adapter = MainFragmentProductionAdapter(list)
+
+                            doAsync {
+                                val adapter = MainFragmentProductionAdapter(getProductionsInformation())
+
+                                uiThread{
+                                    setAdapter(adapter)
+                                    ItemTouchHelper(AdapterItemTouchCallbackHelper(adapter)).attachToRecyclerView(this@recyclerView)
+                                }
+                            }
                         }
                     }.lparams(width = matchParent, height = matchParent){
                         behavior = AppBarLayout.ScrollingViewBehavior()
