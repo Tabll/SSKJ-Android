@@ -29,4 +29,11 @@ class SharedPreferencesMaker {
         val sharedPreferences: SharedPreferences = context.getSharedPreferences("SSKJ", Context.MODE_PRIVATE)
         return sharedPreferences.getString(key,"NULL")
     }
+
+    fun removeSharedPreferences(context: Context, key: String){
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences("SSKJ", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.remove(key)
+        editor.apply()
+    }
 }

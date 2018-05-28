@@ -4,6 +4,7 @@ import android.app.Activity
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
+import android.widget.LinearLayout
 import org.jetbrains.anko.*
 import org.jetbrains.anko.support.v4.*
 import org.jetbrains.anko.appcompat.v7.*
@@ -24,6 +25,7 @@ class ZFragmentMainActivity : Activity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		linearLayout {
+			orientation = LinearLayout.VERTICAL
 			coordinatorLayout {
 				//android:fitsSystemWindows = true //not support attribute
 				appBarLayout {
@@ -49,11 +51,9 @@ class ZFragmentMainActivity : Activity() {
 						//}.lparams(width = matchParent, height = dip(56))
 					}.lparams(width = matchParent, height = dip(300))
 				}.lparams(width = matchParent)
-				nestedScrollView {
+				swipeRefreshLayout {
 					//app:layout_behavior = @string/appbar_scrolling_view_behavior //not support attribute
-					swipeRefreshLayout {
-						//recyclerView {
-						//}.lparams(width = matchParent, height = matchParent)
+					recyclerView {
 					}
 				}.lparams(width = matchParent, height = matchParent)
 			}.lparams(width = matchParent, height = matchParent)

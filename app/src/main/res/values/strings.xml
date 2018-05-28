@@ -20,6 +20,11 @@
 
     <string name="water_quality_over_all">水质概览</string>
 
+    <!--主页面使用-->
+    <string name="production_name_is">设备名：%1$s</string>
+    <string name="production_type_is">型号：%1$s</string>
+    <string name="production_state_is">状态：%1$s</string>
+
     <!--我的页使用-->
     <string name="how_to_use_products">产品使用说明</string>
     <string name="connect_my_products">设备绑定</string>

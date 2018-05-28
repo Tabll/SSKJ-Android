@@ -3,4 +3,6 @@
     <item name="view_water_wave_include" type="id" />
 
     <item name="mineFragment_infoTextView" type="id" />
+
+    <item name="mainFragment_refreshLayout" type="id" />
 </resources>
