@@ -11,6 +11,10 @@ import cn.tabll.sskj.objects.ChatMessages
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * 客服页面的 ListView 适配器
+ **/
+
 class ChatMessageAdapter(context: Context, messages: MutableList<ChatMessages>) : BaseAdapter() {
 
     private var layoutInflater: LayoutInflater = LayoutInflater.from(context)
@@ -30,30 +34,29 @@ class ChatMessageAdapter(context: Context, messages: MutableList<ChatMessages>) 
     }
 
     override fun getView(i: Int, view: View?, viewGroup: ViewGroup): View? {
-        //var view = view
         var myView: View? = view
         val chatMessage = chatMessages[i]
         val viewHolder: ViewHolder
         if (myView == null) {
             //通过ItemType设置不同的布局
-            if (getItemViewType(i) == 0) {//假如为0，则是小笨的消息
+            if (getItemViewType(i) == 0) { //假如为0，则是小笨的消息
                 myView = layoutInflater.inflate(R.layout.from_message, viewGroup, false)
                 viewHolder = ViewHolder()
                 viewHolder.date = myView!!.findViewById(R.id.from_date)
                 viewHolder.message = myView.findViewById(R.id.from_message_info)
-            } else {//假如为1，则是发送的消息
+            } else { //假如为1，则是发送的消息
                 myView = layoutInflater.inflate(R.layout.to_message, viewGroup, false)
                 viewHolder = ViewHolder()
                 viewHolder.date = myView!!.findViewById(R.id.to_date)
                 viewHolder.message = myView.findViewById(R.id.to_message_info)
             }
-            myView.tag = viewHolder//存储一下ViewHolder
+            myView.tag = viewHolder //存储一下ViewHolder
         } else {
             viewHolder = myView.tag as ViewHolder
         }
         //设置数据
-        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA)//设置时间格式
-        viewHolder.date!!.text = simpleDateFormat.format(chatMessage.date)//获取时间
+        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA) //设置时间格式
+        viewHolder.date!!.text = simpleDateFormat.format(chatMessage.date) //获取时间
         viewHolder.message!!.text = chatMessage.msg//获取消息
         return myView
     }

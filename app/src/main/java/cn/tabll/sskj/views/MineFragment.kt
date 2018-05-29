@@ -28,10 +28,6 @@ class MineFragment : Fragment() {
 
     private val log = AnkoLogger<String>()
 
-    //override fun onCreate(savedInstanceState: Bundle?) {
-    //    super.onCreate(savedInstanceState)
-    //}
-
     private fun isUserSignIn(): Boolean{
         return when (SharedPreferencesMaker().readSharedPreferencesFromKey(ctx,"State")){
             "1" -> true
@@ -74,7 +70,6 @@ class MineFragment : Fragment() {
                             textSize = 20f //sp
                             setTypeface(typeface, Typeface.BOLD)
                         }.lparams {
-                            //centerInParent()
                             gravity = Gravity.CENTER
                         }
                         //app:popupTheme = @style/AppTheme.PopupOverlay //not support attribute
@@ -99,7 +94,7 @@ class MineFragment : Fragment() {
                         }
                         textView {
                             id = R.id.mineFragment_infoTextView
-                            text = "上善已与您相伴100天"
+                            text = "请登陆"
                         }.lparams {
                             gravity = Gravity.CENTER_HORIZONTAL
                             bottomMargin = dip(20)
@@ -107,9 +102,10 @@ class MineFragment : Fragment() {
                     }.lparams(width = matchParent, height = matchParent)
                 }.lparams(width = matchParent)
 
-
-
                 cardView {
+                    onClick {
+                        toast("暂无此功能")
+                    }
                     linearLayout {
                         orientation = LinearLayout.HORIZONTAL
                         imageView {
@@ -134,6 +130,9 @@ class MineFragment : Fragment() {
                     bottomMargin = dip(20)
                 }
                 cardView {
+                    onClick {
+                        toast("暂无此功能")
+                    }
                     linearLayout {
                         orientation = LinearLayout.HORIZONTAL
                         imageView {
@@ -155,6 +154,9 @@ class MineFragment : Fragment() {
                     }
                 }.lparams(width = matchParent)
                 cardView {
+                    onClick {
+                        toast("暂无此功能")
+                    }
                     linearLayout {
                         orientation = LinearLayout.HORIZONTAL
                         imageView {
@@ -176,6 +178,9 @@ class MineFragment : Fragment() {
                     }
                 }.lparams(width = matchParent)
                 cardView {
+                    onClick {
+                        toast("暂无此功能")
+                    }
                     linearLayout {
                         orientation = LinearLayout.HORIZONTAL
                         imageView {
@@ -197,7 +202,6 @@ class MineFragment : Fragment() {
                     }
                 }.lparams(width = matchParent)
                 cardView {
-
                     onClick {
                         startActivity<TalkActivity>()
                     }
@@ -222,8 +226,6 @@ class MineFragment : Fragment() {
                         marginEnd = dip(90)
                     }
                 }.lparams(width = matchParent)
-                //recyclerView {
-                //}.lparams(width = matchParent, height = matchParent)
             }
         }.view
     }

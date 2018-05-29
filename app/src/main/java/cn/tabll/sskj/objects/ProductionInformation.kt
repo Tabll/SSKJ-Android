@@ -1,5 +1,9 @@
 package cn.tabll.sskj.objects
 
+/**
+ * 设备信息
+ **/
+
 class ProductionInformation {
     var id: String = ""
     var name: String = ""

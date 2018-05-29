@@ -3,6 +3,10 @@ package cn.tabll.sskj.tools
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 
+/**
+ * 主页面设备信息适配器的回调帮助（Item的移动滑动事件）
+ **/
+
 class AdapterItemTouchCallbackHelper (private val adapter: AdapterItemTouchHelper) : ItemTouchHelper.Callback() {
 
     override fun getMovementFlags(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?): Int {

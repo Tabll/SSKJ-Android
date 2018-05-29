@@ -2,6 +2,10 @@ package cn.tabll.sskj.listener
 
 import android.support.design.widget.AppBarLayout
 
+/**
+ * 主页面 AppBar 展开与收缩监听器
+ **/
+
 abstract class AppBarStateChangeListener : AppBarLayout.OnOffsetChangedListener{
 
     enum class State {
@@ -42,23 +46,6 @@ abstract class AppBarStateChangeListener : AppBarLayout.OnOffsetChangedListener{
                 }
             }
         }
-        //if (i == 0) {
-        //    if (mCurrentState != State.EXPANDED) {
-        //        onStateChanged(appBarLayout, State.EXPANDED)
-        //    }
-        //    mCurrentState = State.EXPANDED
-        //} else if (Math.abs(i) >= appBarLayout.totalScrollRange) {
-        //    if (mCurrentState != State.COLLAPSED) {
-        //        onStateChanged(appBarLayout, State.COLLAPSED)
-        //    }
-        //    mCurrentState = State.COLLAPSED
-        //} else {
-        //    if (mCurrentState != State.IDLE) {
-        //        onStateChanged(appBarLayout, State.IDLE)
-        //    }
-        //    mCurrentState = State.IDLE
-        //}
     }
-
     abstract fun onStateChanged(appBarLayout: AppBarLayout, state: State)
 }

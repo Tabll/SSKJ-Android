@@ -8,6 +8,7 @@ import java.net.URL
 import java.net.URLEncoder
 
 /**
+ * 发送网络请求类
  * 此部分代码受 https://www.cnblogs.com/Jason-Jan/p/7127082.html 启发
  * 有删改
  **/

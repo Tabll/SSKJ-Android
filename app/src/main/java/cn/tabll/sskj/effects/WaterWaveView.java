@@ -17,6 +17,7 @@ import cn.tabll.sskj.R;
 
 /**
  * 此部分代码受https://github.com/Geekince/WaterWaveView启发
+ * 有多处修改
  **/
 
 public class WaterWaveView extends View {

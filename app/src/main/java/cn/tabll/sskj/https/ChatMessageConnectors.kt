@@ -13,6 +13,10 @@ import java.net.MalformedURLException
 import java.net.URLEncoder
 import java.util.*
 
+/**
+ * 图灵聊天机器人连接请求
+ **/
+
 class Utils {
     private val myURL = "http://www.tuling123.com/openapi/api"
     private val myAPIkey = "49f2b50b474174b487a9d88f3cea5ff2"
@@ -25,7 +29,7 @@ class Utils {
             result = gson.fromJson(jsonRes, ChatMessagesResults::class.java)
             chatMessage.msg = result!!.text
         } catch (e: JsonSyntaxException) {
-            chatMessage.msg = "小笨正忙"
+            chatMessage.msg = "客服正忙"
         }
         chatMessage.date = Date() //设置时间
         chatMessage.type = ChatMessages.Type.INCOMING //设置类型

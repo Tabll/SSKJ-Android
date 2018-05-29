@@ -20,14 +20,14 @@ import kotlin.collections.ArrayList
 
 class TalkActivity : AppCompatActivity() {
 
-    private var XBMessages: ListView? = null
+    private var xbMessages: ListView? = null
     private var chatMessageAdapter: ChatMessageAdapter? = null
     private var messages: MutableList<ChatMessages>? = null
 
-    private var input_text: EditText? = null
+    private var inputText: EditText? = null
     private var sendButton: Button? = null
 
-    private val TAG = "XbActivity"
+    private val tag = "XbActivity"
 
     private val handler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
@@ -47,12 +47,12 @@ class TalkActivity : AppCompatActivity() {
         initView()//初始化所有的View
         initData()//初始化所有的数据
         initListener()//初始化事件
-        Log.i(TAG, "小笨初始化已完成")
+        Log.i(tag, "客服初始化已完成")
     }
 
     private fun initListener() {
         sendButton!!.setOnClickListener(View.OnClickListener {
-            val toMessage = input_text!!.text.toString()
+            val toMessage = inputText!!.text.toString()
             if (TextUtils.isEmpty(toMessage)) {
                 Toast.makeText(this, "发送消息为空", Toast.LENGTH_SHORT).show()
                 return@OnClickListener
@@ -64,7 +64,7 @@ class TalkActivity : AppCompatActivity() {
             tocMessage.type = ChatMessages.Type.OUTGOING
             messages!!.add(tocMessage)
             chatMessageAdapter!!.notifyDataSetChanged()//通知更新
-            input_text!!.setText("")//清空输入框
+            inputText!!.setText("")//清空输入框
 
             object : Thread() {
                 override fun run() {
@@ -80,19 +80,19 @@ class TalkActivity : AppCompatActivity() {
     private fun initData() {
         messages = ArrayList()
         //messages.add(new ChatMessage("你好", ChatMessage.Type.INCOMING, new Date()));
-        //messages.add(new ChatMessage("你好", ChatMessage.Type.OUTCOMING, new Date()));
+        //messages.add(new ChatMessage("你好", ChatMessage.Type.OUTGOING, new Date()));
         chatMessageAdapter = ChatMessageAdapter(this, messages!!)
 
-        XBMessages!!.adapter = chatMessageAdapter
+        xbMessages!!.adapter = chatMessageAdapter
     }
 
     private fun initView() {
-        XBMessages = findViewById(R.id.XB_list)
-        input_text = findViewById(R.id.import_message)
+        xbMessages = findViewById(R.id.XB_list)
+        inputText = findViewById(R.id.import_message)
         sendButton = findViewById(R.id.send_button)
     }
 
-    fun back(view: View) {
+    fun back() {
         this.finish()
     }
 }

@@ -13,19 +13,25 @@ import org.jetbrains.anko.support.v4.UI
 import com.github.mikephil.charting.formatter.IValueFormatter
 import com.github.mikephil.charting.data.*
 import kotlinx.android.synthetic.main.view_line_chart.*
-import kotlinx.android.synthetic.main.view_line_chart.view.*
 import org.jetbrains.anko.support.v4.dip
-import java.sql.Time
-import android.util.DisplayMetrics
-import org.jetbrains.anko.support.v4.px2dip
-import org.jetbrains.anko.support.v4.px2sp
+import com.github.mikephil.charting.formatter.IAxisValueFormatter
 
+/**
+ * Copyright [2018] [cn.tabll.sskj]
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * */
 
 class WaterQualityFragment : Fragment() {
 
-    //private val mColors = mutableListOf(Color.parseColor("#C23531"), Color.parseColor("#2F4554"))
     private fun showChart() {
-
         val dm = resources.displayMetrics
         val params = line_chart_view.layoutParams
         params.height = dm.widthPixels
@@ -38,14 +44,13 @@ class WaterQualityFragment : Fragment() {
             entries.add(Entry(i.toFloat(), data))
         }
         val dataSet = LineDataSet(entries, "重金属含量")
-        dataSet.setColors(Color.TRANSPARENT) // 每个点之间线的颜色，还有其他几个方法，自己看
+        dataSet.setColors(Color.TRANSPARENT)
         dataSet.fillDrawable = resources.getDrawable(R.drawable.color_chart_fill, null)
         dataSet.setDrawFilled(true)
-        dataSet.setCircleColor(Color.parseColor("#26AAB5"))
+        dataSet.setCircleColor(Color.parseColor("#5878CC"))
         dataSet.circleSize = 5f
-        dataSet.valueFormatter = IValueFormatter { value, entry, dataSetIndex, viewPortHandler -> // 将值转换为想要显示的形式，比如，某点值为1，变为“1￥”,MP提供了三个默认的转换器，
-            // LargeValueFormatter:将大数字变为带单位数字；PercentFormatter：将值转换为百分数；StackedValueFormatter，对于BarChart，是否只显示最大值图还是都显示
-            value.toString() + "mg"
+        dataSet.valueFormatter = IValueFormatter { value, _, _, _ ->
+            value.toString()
         }
         val lineData = LineData(dataSet)
         line_chart_view.data = lineData //设置数据源
@@ -53,25 +58,26 @@ class WaterQualityFragment : Fragment() {
 
         line_chart_view.animateX(3000)
         val description = Description()  // 这部分是深度定制描述文本，颜色，字体等
-        description.text = "数据更新时间：5月28日"
+        description.text = "数据更新时间：5月29日"
         description.textColor = Color.WHITE
         line_chart_view.description = description
-        line_chart_view.setDrawGridBackground(false) // 绘制区域的背景（默认是一个灰色矩形背景）将绘制，默认false
-        line_chart_view.setDrawBorders(false)    // 绘制区域边框绘制，默认false
-        line_chart_view.setBorderColor(Color.RED) // 边框颜色
-        line_chart_view.setBorderWidth(dip(2).toFloat())   // 边框宽度,dp
-        line_chart_view.setMaxVisibleValueCount(14)  // 数据点上显示的标签，最大数量，默认100。且dataSet.setDrawValues(true);必须为true。只有当数据数量小于该值才会绘制标签
-
-
+        line_chart_view.setDrawGridBackground(false) //绘制区域的背景（默认是一个灰色矩形背景）将绘制，默认false
+        line_chart_view.setDrawBorders(false) //绘制区域边框绘制，默认false
+        line_chart_view.setBorderColor(Color.RED) //边框颜色
+        line_chart_view.setBorderWidth(dip(2).toFloat()) //边框宽度,dp
+        line_chart_view.setMaxVisibleValueCount(14)  //数据点上显示的标签，最大数量，默认100。且dataSet.setDrawValues(true);必须为true。只有当数据数量小于该值才会绘制标签
 
         val yAxis = line_chart_view.axisLeft
-        yAxis.axisMaximum = 0.03f
+        yAxis.axisMaximum = 0.04f
         yAxis.axisMinimum = 0f
+
+        yAxis.valueFormatter = IAxisValueFormatter { value, _ ->
+            String.format("%.3f", value) + "mg"
+        }
 
         line_chart_view.axisRight.isEnabled = false
 
-
-
+        //此部分注释来源：https://blog.csdn.net/dapangzao/article/details/74949541
         // **************************图表本身一般样式**************************** //
         //mLineChart.setBackgroundColor(Color.WHITE) // 整个图标的背景色
         ////        mLineChart.setContentDescription("××表");   // 右下角的描述文本,测试并不显示
@@ -85,8 +91,6 @@ class WaterQualityFragment : Fragment() {
         //mLineChart.setBorderColor(Color.GREEN) // 边框颜色
         //mLineChart.setBorderWidth(2)   // 边框宽度,dp
         //mLineChart.setMaxVisibleValueCount(14)  // 数据点上显示的标签，最大数量，默认100。且dataSet.setDrawValues(true);必须为true。只有当数据数量小于该值才会绘制标签
-//
-//
         //// *********************滑动相关*************************** //
         //mLineChart.setTouchEnabled(true) // 所有触摸事件,默认true
         //mLineChart.setDragEnabled(true)    // 可拖动,默认true
@@ -220,12 +224,10 @@ class WaterQualityFragment : Fragment() {
         //legend.resetCustom()   // 去掉上面方法设置的图例，然后之前dataSet中设置的会重新显示。
         ////        legend.setExtra(new int[]{Color.RED, Color.GRAY, Color.GREEN}, new String[]{"label1", "label2", "label3"}); // 添加图例，颜色与label数量要一致。
         //// 如果前面已经在dataSet中设置了颜色，那么之前的图例就存在，这个只是添加在后面的图例，并不一定有对应数据。
-
         //mLineChart.invalidate()    // 重绘
         //// ********************其他******************************* //
         //mLineChart.setLogEnabled(false)    // 是否打印日志，默认false
         //mLineChart.notifyDataSetChanged();  // 通知有值变化，重绘，一般动态添加数据时用到
-//
         //// ******************指定缩放显示范围************************* //
         //// 这里要说一下，下面并不是指定其初始显示的范围，所以，很可能大家觉得没有效果。其实这几个方法目的是限制缩放时的可见范围最值。
         ////        mLineChart.setVisibleXRangeMaximum(6); // X轴缩小可见最大范围，这里测试有点问题，范围不是指定的，可以缩小到更多范围。
@@ -238,32 +240,24 @@ class WaterQualityFragment : Fragment() {
         //// 比如，自动时，图例与绘制区是分开的，但是自己写就可能重和在一起。慎用
         ////        mLineChart.resetViewPortOffsets();  // 重置上面的偏移量设置。
         ////        mLineChart.setExtraOffsets(10, 0, 10, 0);   // 这个与上面的区别是不会忽略其自己计算的偏移。
-//
         //// **************************移动******************************** //
         ////        mLineChart.fitScreen(); // 重置所有缩放与拖动，使图标完全符合其边界
         ////        mLineChart.moveViewToX(30); // 想指定向偏移，比如原本显示前三个点，现在显示后三个，如果没有缩放其实看不出啥效果
-//
         ////        mLineChart.moveViewTo(30, 10, YAxis.AxisDependency.LEFT);    // 向指定方向偏移,如果没有缩放其实看不出啥效果,后面的轴没啥效果
         ////        mLineChart.moveViewToAnimated(30, 10, YAxis.AxisDependency.LEFT, 2000); // 同上面那个，但是有动画效果
         ////        mLineChart.centerViewTo(30, 10, YAxis.AxisDependency.LEFT); // 将视图中心移动到指定位置，也是要缩放才有效果
         ////        mLineChart.centerViewToAnimated(30, 10, YAxis.AxisDependency.LEFT, 2000); // 同上面那个，但是有动画效果
-//
-//
         //// ****************************自动缩放********************************** //
         //// 这里的缩放效果会收到setVisibleXRangeMaximum等范围影响，
         ////        mLineChart.zoomIn();    // 自动放大1.4倍，没看出效果
         ////        mLineChart.zoomOut();   // 自动缩小0.7倍，没看出效果
         ////        mLineChart.zoom(2f, 2f, 2, 3, YAxis.AxisDependency.LEFT);
         ////        mLineChart.zoomAndCenterAnimated(1.4f, 1.4f, 2, 3, YAxis.AxisDependency.LEFT, 3000);    // 缩放，有动画，报了个空指针。。。
-//
-//
         //// ************************动画************************************** //
         ///*mLineChart.animateX(3000);  // 数据从左到右动画依次显示
         //mLineChart.animateY(3000);  // 数据从下到上动画依次显示*/
         ////        mLineChart.animateXY(3000, 3000);   // 上面两个的结合
         //mLineChart.animateX(3000, Easing.EasingOption.EaseInQuad) // 动画播放随时间变化的速率，有点像插值器。后面这个有的不能用
-//
-//
         //// **************************所有数据样式************************************ //
         //mLineChart.setMarker(ChartMarkerView(this, R.layout.item_chart_indicator, "温度:", "℃"))    // 点击数据点显示的pop，有俩默认的，MarkerImage：一张图片，MarkerView:一个layout布局,也可以自己定义.这里这个是我自定义的一个MarkerView。
         //lineData.setValueTextColor(Color.RED)   // 该条线的
@@ -282,13 +276,9 @@ class WaterQualityFragment : Fragment() {
         //})
         //lineData.setDrawValues(true)   // 绘制每个点的值
         //// 上面这些都是data集合中的相关属性，也可以针对每个dataSet来设置
-//
-//
         //// **************************图表本身特殊样式******************************** //
         //mLineChart.setAutoScaleMinMaxEnabled(false)    // y轴是否自动缩放；当缩放时，y轴的显示会自动根据x轴范围内数据的最大最小值而调整。财务报表比较有用，默认false
         //mLineChart.setKeepPositionOnRotation(false) // 设置当屏幕方向变化时，是否保留之前的缩放与滚动位置，默认：false
-//
-//
         //// *****************************其他的chart************************* //
         //// 下面只有barChart(柱状图)有用
         //val mBarChart = findViewById(R.id.bc) as BarChart
@@ -308,7 +298,6 @@ class WaterQualityFragment : Fragment() {
         //mBarChart.setDrawBarShadow(false)   // 柱形阴影，一般有值被绘制，但是值到顶部的位置为空，这个方法设置也画这部分，但是性能下降约40%，默认false
         //// setDrawValuesForWholeStack(boolean enabled);  // 没有该方法。。。是否绘制堆积的每个值，还是只是画堆积的总值，
         //// setDrawHighlightArrow(true);  // 没有该方法。。。是否绘制高亮箭头
-//
         //// 下面只有PieChart(饼状图)有用
         //val mPieChart = findViewById(R.id.pc) as PieChart
         //val pieEntries = ArrayList()
@@ -331,7 +320,6 @@ class WaterQualityFragment : Fragment() {
         //mPieChart.setTransparentCircleColor(Color.RED) // 上述透明圆环的颜色
         //mPieChart.setTransparentCircleAlpha(50)    // 上述透明圆环的透明度[0-255]，默认100
         //mPieChart.maxAngle = 360f    // 设置整个饼形图的角度，默认是360°即一个整圆，也可以设置为弧，这样现实的值也会重新计算
-//
         //// 下面只有RadarChart(雷达图)有用
         //val mRadarChart = findViewById(R.id.rc) as RadarChart
         //val radarEntries = ArrayList()
@@ -346,7 +334,6 @@ class WaterQualityFragment : Fragment() {
         //val radarData = RadarData(iRadarDataSet)
         //mRadarChart.data = radarData
         //mRadarChart.skipWebLineCount = 8 // 允许不绘制从中心发出的线，当线多时较有用。默认为0
-//
         //// *************************其他********************************* //
         //// 上面介绍了MP的大部分常用的api，基本可以满足绝大部分的需求，还有部分不常用的暂时不说了，以后用的着再下面补充
         ////        mLineChart.clear(); // 清空

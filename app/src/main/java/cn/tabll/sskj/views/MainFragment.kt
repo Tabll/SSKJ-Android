@@ -57,13 +57,6 @@ class MainFragment : Fragment() {
         water_wave_view.stopWave()
     }
 
-    //override fun onDestroy() {
-    //    super.onDestroy()
-    //}
-    //override fun onStop() {
-    //    super.onStop()
-    //}
-
     private fun getProductionsInformation(): ArrayList<ProductionInformation>{
         log.info("开始获取设备信息")
         val httpConnector = HttpConnectors()

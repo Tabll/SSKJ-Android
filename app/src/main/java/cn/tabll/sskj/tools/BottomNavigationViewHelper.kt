@@ -6,6 +6,10 @@ import android.support.design.widget.BottomNavigationView
 import android.annotation.SuppressLint
 import android.util.Log
 
+/**
+ * 底部的 BottomNavigationView 修复（如果没有它超过三个以上View的时候就会只显示一个的文字）
+ **/
+
 class BottomNavigationViewHelper {
     @SuppressLint("RestrictedApi")
     fun disableShiftMode(view: BottomNavigationView) {

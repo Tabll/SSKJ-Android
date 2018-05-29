@@ -15,6 +15,10 @@ import org.jetbrains.anko.*
 import org.jetbrains.anko.design.textInputLayout
 import kotlin.collections.ArrayList
 
+/**
+ * 主页面设备信息适配器
+ **/
+
 class MainFragmentProductionAdapter(private var productions: ArrayList<ProductionInformation>): Adapter<MainFragmentProductionAdapter.MyHolder>(), AdapterItemTouchHelper {
 
     inner class MyHolder(itemView: View?): RecyclerView.ViewHolder(itemView){
@@ -24,11 +28,6 @@ class MainFragmentProductionAdapter(private var productions: ArrayList<Productio
     }
 
     override fun onItemMove(fromPosition: Int, toPosition: Int) {
-        //    notifyItemChanged(fromPosition)
-        //    notifyItemChanged(toPosition)
-        //    Collections.swap(productions, fromPosition, toPosition)
-        //    SelfChoiceList.changeSelfChoiceList(fromPosition, toPosition)
-        //    SelfChoiceList.saveSelfChoice(additionalView!!.context)
         notifyItemMoved(fromPosition, toPosition)
     }
 
