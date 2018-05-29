@@ -28,6 +28,9 @@
     <string name="production_manufacturer_is">制造商：%1$s</string>
     <string name="production_id_is">ID：%1$s</string>
 
+    <!--水质页面使用-->
+    <string name="production_info">数据来源：釜式污水处理装置\n功能化磁性纳米材料\n重金属类污染物检出量低于国家标准</string>
+
     <!--我的页使用-->
     <string name="how_to_use_products">产品使用说明</string>
     <string name="connect_my_products">设备绑定</string>

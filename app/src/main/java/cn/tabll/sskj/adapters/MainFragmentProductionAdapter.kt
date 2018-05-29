@@ -1,8 +1,5 @@
 package cn.tabll.sskj.adapters
 
-import android.app.ProgressDialog.show
-import android.support.design.R.attr.hintEnabled
-import android.support.design.R.attr.theme
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.RecyclerView.Adapter
 import android.view.LayoutInflater
@@ -16,8 +13,7 @@ import cn.tabll.sskj.tools.AdapterItemTouchHelper
 import kotlinx.android.synthetic.main.adapter_items_main_fragment.view.*
 import org.jetbrains.anko.*
 import org.jetbrains.anko.design.textInputLayout
-import org.jetbrains.anko.sdk25.coroutines.onClick
-import java.util.*
+import kotlin.collections.ArrayList
 
 class MainFragmentProductionAdapter(private var productions: ArrayList<ProductionInformation>): Adapter<MainFragmentProductionAdapter.MyHolder>(), AdapterItemTouchHelper {
 
@@ -30,29 +26,11 @@ class MainFragmentProductionAdapter(private var productions: ArrayList<Productio
     override fun onItemMove(fromPosition: Int, toPosition: Int) {
         //    notifyItemChanged(fromPosition)
         //    notifyItemChanged(toPosition)
-//
         //    Collections.swap(productions, fromPosition, toPosition)
-//
         //    SelfChoiceList.changeSelfChoiceList(fromPosition, toPosition)
         //    SelfChoiceList.saveSelfChoice(additionalView!!.context)
-
         notifyItemMoved(fromPosition, toPosition)
     }
-
-    //override fun onItemDismiss(position: Int) {
-    //    //    if (openedItem == position){
-    //    //        openedCard!!.context.startActivity<StockMoreInfoActivity>("position" to SelfChoiceList.getStockCodeByID(position))
-    //    //    }
-////
-    //    //    if (productions.size > 5 && openedItem != -1){
-    //    //        openedCard?.simpleCardView?.removeView(additionalView)
-    //    //        openedCard?.simpleCardView?.layoutParams?.height = Value().px80
-    //    //        openedCard = null
-    //    //        openedItem = -1
-    //    //    }
-    //    //    //notifyItemChanged(position)
-    //    notifyDataSetChanged()
-    //}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.adapter_items_main_fragment, parent, false)
@@ -71,20 +49,12 @@ class MainFragmentProductionAdapter(private var productions: ArrayList<Productio
         view.production_state_textView.text = String.format(view.resources.getString(R.string.production_state_is), productions[position].state)
 
         view.production_info_imageView.setOnClickListener{ infoImageClickListener(view, position) }
-        //view.simpleCardView.setOnClickListener { itemClickListener(view, position) }
-        //view.stockNameTextView.text = items!![position].stockName
-        //view.stockPriceTextView.text = items!![position].nowPrice
-        //view.stockChangingPriceTextView.text = items!![position].changingPrice
-        //view.stockChangingPercentTextView.text = items!![position].changingPercent
-        //if (!items!![position].isUp){
-        //    view.stockPriceTextView.textColor = Color.parseColor("#218E56")
-        //    view.stockChangingPriceTextView.textColor = Color.parseColor("#218E56")
-        //    view.stockChangingPercentTextView.textColor = Color.parseColor("#218E56")
-        //}else{
-        //    view.stockPriceTextView.textColor = Color.parseColor("#EE3E3E")
-        //    view.stockChangingPriceTextView.textColor = Color.parseColor("#EE3E3E")
-        //    view.stockChangingPercentTextView.textColor = Color.parseColor("#EE3E3E")
-        //}
+    }
+
+    fun dataChanged(data: ArrayList<ProductionInformation>){
+        productions.clear()
+        productions.addAll(data)
+        notifyDataSetChanged()
     }
 
     private fun infoImageClickListener(view: View, position: Int){
@@ -144,12 +114,5 @@ class MainFragmentProductionAdapter(private var productions: ArrayList<Productio
                 view.context.toast("已更改")
             })
         }.show()
-
-        //view.context.alert("数据来源\n新浪网") {
-        //    title = "关于"
-        //    okButton {
-        //        view.context.toast("好的")
-        //    }
-        //}.show()
     }
 }

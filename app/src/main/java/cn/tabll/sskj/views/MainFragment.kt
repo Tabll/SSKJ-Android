@@ -36,7 +36,7 @@ import java.util.ArrayList
 
 class MainFragment : Fragment() {
 
-    val log = AnkoLogger<String>()
+    private val log = AnkoLogger<String>()
 
     fun stopWave() {
         this.water_wave_view.stopWave()
@@ -48,8 +48,6 @@ class MainFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-
-
         water_wave_view.setWaterLevel(0.7f)
         water_wave_view.startWave()
     }
@@ -67,6 +65,7 @@ class MainFragment : Fragment() {
     //}
 
     private fun getProductionsInformation(): ArrayList<ProductionInformation>{
+        log.info("开始获取设备信息")
         val httpConnector = HttpConnectors()
         val codes = mapOf(
                 "user-phone-number" to SharedPreferencesMaker().readSharedPreferencesFromKey(ctx, "UserName"),
@@ -79,6 +78,8 @@ class MainFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         var mySwipeRefreshLayout = SwipeRefreshLayout(ctx)
+
+        var adapter = MainFragmentProductionAdapter(ArrayList())
 
         return UI {
             linearLayout {
@@ -135,67 +136,20 @@ class MainFragment : Fragment() {
                         id = R.id.mainFragment_refreshLayout
                         setColorSchemeColors(resources.getColor(R.color.colorPrimary))
                         onRefresh {
-                            this.isRefreshing = false
+                            doAsync {
+                                val data = getProductionsInformation()
+                                uiThread {
+                                    adapter.dataChanged(data)
+                                    isRefreshing = false
+                                    log.info("数据已刷新")
+                                }
+                            }
                         }
                         recyclerView {
                             layoutManager = LinearLayoutManager(ctx)
                             itemAnimator = DefaultItemAnimator()
-                            val list = ArrayList<ProductionInformation>()
-                            var production = ProductionInformation()
-                            production.name = "未命名1"
-                            production.type = "GC-06"
-                            production.state = "正常"
-                            list.add(production)
-                            production = ProductionInformation()
-                            production.name = "未命名2"
-                            production.type = "FS-02"
-                            production.state = "正常"
-                            list.add(production)
-                            production = ProductionInformation()
-                            production.name = "未命名3"
-                            production.type = "FS-02"
-                            production.state = "正常"
-                            list.add(production)
-                            production = ProductionInformation()
-                            production.name = "未命名4"
-                            production.type = "FS-02"
-                            production.state = "正常"
-                            list.add(production)
-                            production = ProductionInformation()
-                            production.name = "未命名5"
-                            production.type = "GC-06"
-                            production.state = "正常"
-                            list.add(production)
-                            production = ProductionInformation()
-                            production.name = "未命名6"
-                            production.type = "GC-06"
-                            production.state = "正常"
-                            list.add(production)
-                            production = ProductionInformation()
-                            production.name = "未命名7"
-                            production.type = "GC-06"
-                            production.state = "正常"
-                            list.add(production)
-                            production = ProductionInformation()
-                            production.name = "未命名8"
-                            production.type = "GC-06"
-                            production.state = "正常"
-                            list.add(production)
-                            production = ProductionInformation()
-                            production.name = "未命名9"
-                            production.type = "GC-06"
-                            production.state = "正常"
-                            list.add(production)
-                            production = ProductionInformation()
-                            production.name = "未命名10"
-                            production.type = "GC-06"
-                            production.state = "正常"
-                            list.add(production)
-                            //val adapter = MainFragmentProductionAdapter(list)
-
                             doAsync {
-                                val adapter = MainFragmentProductionAdapter(getProductionsInformation())
-
+                                adapter = MainFragmentProductionAdapter(getProductionsInformation())
                                 uiThread{
                                     setAdapter(adapter)
                                     ItemTouchHelper(AdapterItemTouchCallbackHelper(adapter)).attachToRecyclerView(this@recyclerView)

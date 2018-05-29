@@ -66,7 +66,7 @@ dependencies {
     implementation "org.jetbrains.anko:anko-gridlayout-v7:$anko_version"
 
     // Percent
-    implementation "org.jetbrains.anko:anko-percent:$anko_version"
+    //implementation "org.jetbrains.anko:anko-percent:$anko_version"
 
     // RecyclerView-v7
     implementation "org.jetbrains.anko:anko-recyclerview-v7:$anko_version"
@@ -83,6 +83,9 @@ dependencies {
 
     //Json解析
     implementation "com.google.code.gson:gson:2.8.4"
+
+    //MPAndroidChart 图表包
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
