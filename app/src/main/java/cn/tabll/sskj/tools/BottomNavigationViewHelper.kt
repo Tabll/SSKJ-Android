@@ -21,7 +21,7 @@ class BottomNavigationViewHelper {
             shiftingMode.isAccessible = false
             for (i in 0 until menuView.childCount) {
                 val item = menuView.getChildAt(i) as BottomNavigationItemView
-                item.setShiftingMode(false)
+                item.setShifting(false)
                 //再次设置检查值，因此视图将被更新
                 item.setChecked(item.itemData.isChecked)
             }

@@ -92,7 +92,7 @@ class TalkActivity : AppCompatActivity() {
         sendButton = findViewById(R.id.send_button)
     }
 
-    fun back() {
+    fun back(view: View) {
         this.finish()
     }
 }

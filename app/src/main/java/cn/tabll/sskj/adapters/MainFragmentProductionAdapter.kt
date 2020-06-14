@@ -21,7 +21,7 @@ import kotlin.collections.ArrayList
 
 class MainFragmentProductionAdapter(private var productions: ArrayList<ProductionInformation>): Adapter<MainFragmentProductionAdapter.MyHolder>(), AdapterItemTouchHelper {
 
-    inner class MyHolder(itemView: View?): RecyclerView.ViewHolder(itemView){
+    inner class MyHolder(itemView: View?): RecyclerView.ViewHolder(itemView!!){
         fun bind(position: Int){
             updateView(itemView, position)
         }
